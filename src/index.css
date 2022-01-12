@@ -56,3 +56,37 @@ code {
 .cds{
   margin-right: 5px;
 }
+.okok{
+  background-color: #67cd67  !important;
+}
+.tox-notification{
+  display: none !important;
+}
+.btn-mgb{
+  margin-bottom: 10px !important;
+}
+.vv{
+  margin-right: 5px;
+}
+.blackw{
+  background-color: #c3c1c1 !important;
+}
+.wp-img{
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+}
+.check-img{
+  border: 2px solid #2185d0;
+}
+.wrap-more{
+  text-align: center;
+}
+.btn-upl{
+  float: right;
+}
+.iconupload{
+  font-size: 21px;
+}

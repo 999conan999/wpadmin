@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Button,Segment,Input,Select,Table,Label,Menu,Modal,Header} from 'semantic-ui-react';
-
+import { Button,Segment,Input,Select,Table,Label,Menu,Modal,Header,Dropdown} from 'semantic-ui-react';
+import ModalEditPost from '../lib/modalEditPost';
+import FileMedia from '../lib/fileMedia';
 class PostEdit extends Component {
     constructor (props) {
         super(props)
@@ -67,8 +68,8 @@ class PostEdit extends Component {
                             <span className='catezz'>theme wordpress</span>
                         </Table.Cell>
                         <Table.Cell>
-                            <Label className='edit-css'><i class="fas fa-edit"></i> edit</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i class="fas fa-trash-alt"></i> delete</Label>
+                            <Label className='edit-css'><i className="fas fa-edit"></i> edit</Label>
+                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
                         </Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -80,8 +81,8 @@ class PostEdit extends Component {
                             <span className='catezz'>theme wordpress</span>
                         </Table.Cell>
                         <Table.Cell>
-                            <Label className='edit-css'><i class="fas fa-edit"></i> edit</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i class="fas fa-trash-alt"></i> delete</Label>
+                            <Label className='edit-css'><i className="fas fa-edit"></i> edit</Label>
+                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
                         </Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -93,8 +94,8 @@ class PostEdit extends Component {
                             <span className='catezz'>theme wordpress</span>
                         </Table.Cell>
                         <Table.Cell>
-                            <Label className='edit-css'><i class="fas fa-edit"></i> edit</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i class="fas fa-trash-alt"></i> delete</Label>
+                            <Label className='edit-css'><i className="fas fa-edit"></i> edit</Label>
+                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
                         </Table.Cell>
                     </Table.Row>
                     </Table.Body>
@@ -123,7 +124,7 @@ class PostEdit extends Component {
                     onClose={() => this.setOpenModalDelete(false)}
                     open={openModalDelete}
                     >
-                    <Header ><i class="fas fa-trash-alt cds"></i> Delete this post</Header>
+                    <Header ><i className="fas fa-trash-alt cds"></i> Delete this post</Header>
                     <Modal.Content>
                         <p>
                         Your inbox is getting full, would you like us to enable automatic
@@ -139,7 +140,8 @@ class PostEdit extends Component {
                         </Button>
                     </Modal.Actions>
                 </Modal>
-
+                <ModalEditPost/>
+                <FileMedia/>
             </React.Fragment>
         )
     }
