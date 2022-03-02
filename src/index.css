@@ -57,7 +57,7 @@ code {
   margin-right: 5px;
 }
 .okok{
-  background-color: #67cd67  !important;
+  background-color: #dad5d3 !important;
 }
 .tox-notification{
   display: none !important;
@@ -77,16 +77,153 @@ code {
   display: inline-block;
   cursor: pointer;
   border: 2px solid #ffffff;
+  position: relative;
 }
 .check-img{
-  border: 2px solid #2185d0;
+  border: 2px solid #2185d0 !important;
 }
 .wrap-more{
   text-align: center;
 }
-.btn-upl{
-  float: right;
-}
+
 .iconupload{
   font-size: 21px;
+}
+.delete.icon{
+  font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+.ui.compact.selection.dropdown {
+  min-width: 100px;
+}
+.assd{
+  background-color: #e5e4e4 !important;
+}
+.bol0px{
+  border-left: 0px !important;
+}
+.selecte{
+  display: inline-block;
+  margin-right: 50px;
+}
+.xyg {
+  background-color: #dfd9d6d4 !important;
+  margin-bottom: 10px;
+}
+.blackxx{
+  /* background-color: #2184d000 !important; */
+}
+.backw{
+  background-color: #dad5d3 !important;
+}
+.ui.input>input, .ui.selection.dropdown {
+  border: 1px solid rgb(34 36 38 / 87%);
+}
+.hsj{
+  width: 50% !important;
+  /* max-width: 800px !important; */
+}
+.ui.fitted.toggle.checkbox>label{
+  background-color: #dad5d3;
+}
+.add-da{
+  background-color: #2185d0 !important;
+  color: azure !important;
+}
+.rmx{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-size: 22px;
+  color: #a78383;
+  cursor: pointer;
+}
+.rmx:hover{
+  color: #fb4b4b;
+}
+.clh{
+  color: #b93131 !important;
+}
+.bdr{
+  border: 1px solid !important;
+}
+.uet{
+  margin-top: 10px;
+}
+.bdrx>.label{
+  border: 1px solid !important;
+}
+.delez{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-size: 16px;
+  display: none;
+}
+.delez:hover{
+  color: #a93636;
+}
+
+.wp-img:hover {
+  border: 2px solid #b7bec3;
+}
+.wp-img:hover>.delez{
+  display: block !important;
+}
+.see_more{
+  cursor: pointer;
+  text-decoration: underline !important;
+}
+.thumnailzz{
+  /* display: inline-block; */
+  width: 80px;
+  height: 80px;
+  /* position: absolute;
+  top: 15px; */
+}
+.thumxx{
+  display: inline-block;
+  position: absolute;
+  top: 15px;
+}
+.vvv{
+  position: relative;
+}
+.kk{
+  position: absolute;
+  right: -2px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.kk:hover{
+  color: #b93131;
+}
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  float: right;
+
+}
+
+.btnz {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity:0;
+}
+.upload-btn-wrapper:hover>.btnz{
+  background-color: rgb(163, 158, 168) !important;
+  color: whitesmoke;
 }

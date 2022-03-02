@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import { Button,Segment,Input,Select,Table,Label,Menu,Modal,Header,Dropdown} from 'semantic-ui-react';
-import ModalEditPost from '../lib/modalEditPost';
-import FileMedia from '../lib/fileMedia';
+import ControlModelPost from './controlModelPost';
+import * as lang from '../lib/constants/language'
+
 class PostEdit extends Component {
     constructor (props) {
         super(props)
         this.state = {
+            id_post:-1,
+            open:false,
             listCategory:[
                 { key: 'all', text: 'All', value: 'all' },
                 { key: 'articles', text: 'Articles', value: 'articles' },
                 { key: 'products', text: 'Products', value: 'products' },
             ],
-            openModalDelete:false
+            openModalDelete:false,
+
         }
     }
     // modal delete
@@ -25,32 +29,54 @@ class PostEdit extends Component {
             openModalDelete:true
         })
     }
+    //
+    action_click_edit=(id)=>{
+        this.setState({
+            id_post:id,
+            open:true
+        })
+    }
+    // close modal edit
+    close_model_edit=()=>{
+        this.setState({
+            open:false
+        })
+    }
+    //
+    // Create post
+    action_click_create_post=(id)=>{
+        this.setState({
+            id_post:id,
+            open:true
+        })
+    }
+    //
     render() {
-        let {listCategory,openModalDelete} =this.state;
+        let {listCategory,openModalDelete,id_post,open} =this.state;
         return (
             <React.Fragment>
-                <Segment.Group horizontal>
+                <Segment.Group horizontal className='assd'>
                     <Segment>
-                        <Button primary>
+                        <Button primary onClick={()=>this.action_click_create_post(-2)}>
                             <i className="fas fa-plus addcss"></i>
-                            Create Post
+                            {lang.CREATE_POST_NEW}
                         </Button>
                     </Segment>
-                    <Segment></Segment>
+                    <Segment className='bol0px'></Segment>
                     <Segment>
-                        <Input type='text' placeholder='Search...' action>
-                            <input />
-                            <Select compact options={listCategory} defaultValue='articles' />
-                        </Input>
-                    </Segment>    
+                        <div className="ui action input"><input type="text" placeholder="Search..."/><button className="ui button bdr">Search</button></div>
+                    </Segment>   
+                    <Segment>
+                        <Select  options={listCategory} defaultValue='all' />
+                    </Segment> 
                 </Segment.Group>
                 {/* listpost */}
                 <Table color={"red"} selectable>
                     <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell >Title</Table.HeaderCell>
-                        <Table.HeaderCell width="1">Status</Table.HeaderCell>
-                        <Table.HeaderCell width="3">Category</Table.HeaderCell>
+                        <Table.HeaderCell >{lang.TITLE_POST}</Table.HeaderCell>
+                        <Table.HeaderCell width="1">{lang.STATUS}</Table.HeaderCell>
+                        <Table.HeaderCell width="3">{lang.CATEGORY}</Table.HeaderCell>
                         <Table.HeaderCell width="3">Edit/Delete</Table.HeaderCell>
                     </Table.Row>
                     </Table.Header>
@@ -68,7 +94,7 @@ class PostEdit extends Component {
                             <span className='catezz'>theme wordpress</span>
                         </Table.Cell>
                         <Table.Cell>
-                            <Label className='edit-css'><i className="fas fa-edit"></i> edit</Label>
+                            <Label className='edit-css' onClick={()=>this.action_click_edit(1)}><i className="fas fa-edit"></i> edit</Label>
                             <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
                         </Table.Cell>
                     </Table.Row>
@@ -81,7 +107,7 @@ class PostEdit extends Component {
                             <span className='catezz'>theme wordpress</span>
                         </Table.Cell>
                         <Table.Cell>
-                            <Label className='edit-css'><i className="fas fa-edit"></i> edit</Label>
+                            <Label className='edit-css' onClick={()=>this.action_click_edit(2)}><i className="fas fa-edit"></i> edit</Label>
                             <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
                         </Table.Cell>
                     </Table.Row>
@@ -94,7 +120,7 @@ class PostEdit extends Component {
                             <span className='catezz'>theme wordpress</span>
                         </Table.Cell>
                         <Table.Cell>
-                            <Label className='edit-css'><i className="fas fa-edit"></i> edit</Label>
+                            <Label className='edit-css' onClick={()=>this.action_click_edit(3)}><i className="fas fa-edit"></i> edit</Label>
                             <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
                         </Table.Cell>
                     </Table.Row>
@@ -140,8 +166,11 @@ class PostEdit extends Component {
                         </Button>
                     </Modal.Actions>
                 </Modal>
-                <ModalEditPost/>
-                <FileMedia/>
+                <ControlModelPost
+                    open={open}
+                    id_post={id_post}
+                    close_model_edit={this.close_model_edit}
+                />
             </React.Fragment>
         )
     }

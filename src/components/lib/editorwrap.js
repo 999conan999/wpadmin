@@ -13,8 +13,10 @@ import { Editor } from '@tinymce/tinymce-react';
         return (
           <>
            <Editor
-             onEditorChange={(evt) => this.props.data_contents(evt)}
-             value={this.props.data_content}
+             onEditorChange={(evt) => {
+              this.props.action_change_content_post(evt)
+             }}
+             value={this.props.content_post}
              init={{
                height: 500,
                menubar: true,
