@@ -9,27 +9,90 @@ class PostEdit extends Component {
         this.state = {
             id_post:-1,
             open:false,
-            listCategory:[
-                { key: 'all', text: 'All', value: 'all' },
-                { key: 'articles', text: 'Articles', value: 'articles' },
-                { key: 'products', text: 'Products', value: 'products' },
-            ],
             openModalDelete:false,
+            listCategory:[
+                { key: -1, text: 'All', value: -1 },
+                { key: 1, text: 'Giường sắt', value: 1 },
+                { key: 2, text: 'Giường gỗ', value: 2 },
+            ],
+            selected_category_id:-1,
+            seleted_delete:{
+                id:-1,
+                title:'ERROR'
+            },
+            key_search:'',
+            data_list_post:[
+                {
+                    id:1,
+                    title:'title 1',
+                    status:'publish',
+                    category:['danh muc 1'],
+                    url:'http://localhost:3000/'
+                },
+                {
+                    id:2,
+                    title:'title 2',
+                    status:'publish',
+                    category:['danh muc f','danh muc h','theme wordpres'],
+                    url:'http://localhost:3000/'
+                },
+                {
+                    id:3,
+                    title:'title 3',
+                    status:'publish',
+                    category:['danh muc 3','danh muc 3','theme wordpres 3'],
+                    url:'http://localhost:3000/'
+                },
+                {
+                    id:4,
+                    title:'title 4',
+                    status:'private',
+                    category:['danh muc 4','danh muc4','theme wordpres'],
+                    url:'http://localhost:3000/'
+                },
+            ]
 
         }
     }
+    //********************************API */
+    componentDidMount(){
+        //[todo] get all post first here and all category
+        // 
+    }
+    // get more post
+    action_click_more=()=>{
+        alert('Click xem them')
+    }
+    // search keywork
+    action_click_search=()=>{
+        let {key_search}=this.state;
+        alert(key_search)
+    }
+    // selected category
+    action_selecte_category=(e,data)=>{
+        let id=data.value;
+        alert(id);        
+        this.setState({
+            selected_category_id:id
+        })
+    }
+    //******************************** */
     // modal delete
     setOpenModalDelete=(st)=>{
         this.setState({
             openModalDelete:st
         })
     }
-    clickDeletePost=()=>{
+    // delete post
+    clickDeletePost=(id,title)=>{
         this.setState({
-            openModalDelete:true
+            openModalDelete:true,
+            seleted_delete:{
+                id:id,
+                title:title
+            }
         })
     }
-    //
     action_click_edit=(id)=>{
         this.setState({
             id_post:id,
@@ -42,7 +105,6 @@ class PostEdit extends Component {
             open:false
         })
     }
-    //
     // Create post
     action_click_create_post=(id)=>{
         this.setState({
@@ -50,9 +112,46 @@ class PostEdit extends Component {
             open:true
         })
     }
-    //
+    // yes delete post
+    action_yes_delete_post=()=>{
+        let {seleted_delete}=this.state;
+        console.log("🚀 ~ file: postEdit.js ~ line 93 ~ PostEdit ~ seleted_delete", seleted_delete)
+        //[todo]
+        this.setState({
+            openModalDelete:false
+        })
+    }
+    // show post
+    show_post_list=(data)=>{
+        let result=[];
+        data.forEach((e,i) => {
+            //
+            let rs=[]
+            e.category.forEach((element,j) => {
+                rs.push( <span className='catezz' key={j}>{element}</span>)
+            });
+            //
+            result.push(
+                <Table.Row key={i} className='danhvt'>
+                    <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i class="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
+                    <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
+                    <Table.Cell>
+
+                        {rs}
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
+                        <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
+                    </Table.Cell>
+                </Table.Row>
+            )
+        });
+        return result;
+    }
+
+    //************************ */
     render() {
-        let {listCategory,openModalDelete,id_post,open} =this.state;
+        let {listCategory,openModalDelete,id_post,open,data_list_post,seleted_delete} =this.state;
         return (
             <React.Fragment>
                 <Segment.Group horizontal className='assd'>
@@ -64,83 +163,44 @@ class PostEdit extends Component {
                     </Segment>
                     <Segment className='bol0px'></Segment>
                     <Segment>
-                        <div className="ui action input"><input type="text" placeholder="Search..."/><button className="ui button bdr">Search</button></div>
+                        <div className="ui action input">
+                            <input type="text" placeholder={lang.TITLE}
+                                value={this.state.key_search}
+                                onChange={(e)=>this.setState({key_search:e.target.value})}
+                            />
+                        <button className="ui button bdr" 
+                            onClick={this.action_click_search}
+                        >{lang.SEARCH}</button></div>
                     </Segment>   
                     <Segment>
-                        <Select  options={listCategory} defaultValue='all' />
+                        <Select  
+                            options={listCategory}
+                            defaultValue={-1} 
+                            onChange={this.action_selecte_category}
+                        />
                     </Segment> 
                 </Segment.Group>
                 {/* listpost */}
-                <Table color={"red"} selectable>
+                <Table color={"red"} >
                     <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell >{lang.TITLE_POST}</Table.HeaderCell>
+                        <Table.HeaderCell >{lang.TITLE}</Table.HeaderCell>
                         <Table.HeaderCell width="1">{lang.STATUS}</Table.HeaderCell>
                         <Table.HeaderCell width="3">{lang.CATEGORY}</Table.HeaderCell>
-                        <Table.HeaderCell width="3">Edit/Delete</Table.HeaderCell>
+                        <Table.HeaderCell width="3">{lang.EDIT_DEL}</Table.HeaderCell>
                     </Table.Row>
                     </Table.Header>
 
                     <Table.Body>
-                    <Table.Row>
-                        <Table.Cell>title 1 </Table.Cell>
-                        <Table.Cell>Public</Table.Cell>
-                        <Table.Cell>
-                            <span className='catezz'>bed</span>
-                            <span className='catezz'>category</span>
-                            <span className='catezz'>theme wordpress</span>
-                            <span className='catezz'>theme wordpress</span>
-                            <span className='catezz'>theme wordpress</span>
-                            <span className='catezz'>theme wordpress</span>
-                        </Table.Cell>
-                        <Table.Cell>
-                            <Label className='edit-css' onClick={()=>this.action_click_edit(1)}><i className="fas fa-edit"></i> edit</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>title 1</Table.Cell>
-                        <Table.Cell>Public</Table.Cell>
-                        <Table.Cell>
-                            <span className='catezz'>bed</span>
-                            <span className='catezz'>category</span>
-                            <span className='catezz'>theme wordpress</span>
-                        </Table.Cell>
-                        <Table.Cell>
-                            <Label className='edit-css' onClick={()=>this.action_click_edit(2)}><i className="fas fa-edit"></i> edit</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>title 1</Table.Cell>
-                        <Table.Cell>Public</Table.Cell>
-                        <Table.Cell>
-                            <span className='catezz'>bed</span>
-                            <span className='catezz'>category</span>
-                            <span className='catezz'>theme wordpress</span>
-                        </Table.Cell>
-                        <Table.Cell>
-                            <Label className='edit-css' onClick={()=>this.action_click_edit(3)}><i className="fas fa-edit"></i> edit</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost()}><i className="fas fa-trash-alt"></i> delete</Label>
-                        </Table.Cell>
-                    </Table.Row>
+                        {this.show_post_list(data_list_post)}
                     </Table.Body>
 
                     <Table.Footer>
                     <Table.Row>
                         <Table.HeaderCell colSpan='3'>
-                        <Menu floated='right' pagination>
-                            <Menu.Item as='a' icon>
-                            <i className="fas fa-chevron-left"></i>
-                            </Menu.Item>
-                            <Menu.Item as='a'>1</Menu.Item>
-                            <Menu.Item as='a'>2</Menu.Item>
-                            <Menu.Item as='a'>3</Menu.Item>
-                            <Menu.Item as='a'>4</Menu.Item>
-                            <Menu.Item as='a' icon>
-                            <i className="fas fa-chevron-right"></i>
-                            </Menu.Item>
-                        </Menu>
+                            <span className='smo'
+                                onClick={this.action_click_more}
+                            >{lang.SEE_MORE}</span>
                         </Table.HeaderCell>
                     </Table.Row>
                     </Table.Footer>
@@ -150,19 +210,16 @@ class PostEdit extends Component {
                     onClose={() => this.setOpenModalDelete(false)}
                     open={openModalDelete}
                     >
-                    <Header ><i className="fas fa-trash-alt cds"></i> Delete this post</Header>
+                    <Header ><i className="fas fa-trash-alt cds"></i>{lang.DELETE_THIS_POST} {seleted_delete.title}</Header>
                     <Modal.Content>
-                        <p>
-                        Your inbox is getting full, would you like us to enable automatic
-                        archiving of old messages?
-                        </p>
+                        <p>{lang.DO_YOU_SURE_DELETE_POST}</p>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='red' onClick={() => this.setOpenModalDelete(false)}>
-                            <i className="fas fa-times cds"></i> No
+                            <i className="fas fa-times cds"></i> {lang.NO_DELETE}
                         </Button>
-                        <Button color='green' onClick={() => this.setOpenModalDelete(false)}>
-                         <i className="fas fa-check cds"></i> Yes
+                        <Button color='green' onClick={this.action_yes_delete_post}>
+                         <i className="fas fa-check cds"></i> {lang.OK_DELETE}
                         </Button>
                     </Modal.Actions>
                 </Modal>
@@ -174,5 +231,7 @@ class PostEdit extends Component {
             </React.Fragment>
         )
     }
+    //
+
 }
 export default PostEdit;

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PageEdit from './page/pagetEdit';
 import PostEdit from './post/postEdit';
 import Home from './home/pagetEdit';
-import CategoryEdit from './category/postEdit';
+import CategoryEdit from './category/CategoryEdit';
 import {  Menu, Segment } from 'semantic-ui-react'
+import * as lang from './lib/constants/language'
 import {
     BrowserRouter as Router,
     Routes,
@@ -36,12 +37,12 @@ class Index extends Component {
                     to="/posts"
                     className={`link item ${activeItem=="posts"?"active":""}`}
                     onClick={()=>this.clickMenu("posts")}
-                >Posts</Link>
+                >{lang.POSTS}</Link>
                 <Link 
                     to="/categorys"
                     className={`link item ${activeItem=="categorys"?"active":""}`}
                     onClick={()=>this.clickMenu("categorys")}
-                >Categorys</Link>
+                >{lang.CATEGORY}</Link>
                 <Link 
                     to="/pages"
                     className={`link item ${activeItem=="pages"?"active":""}`}

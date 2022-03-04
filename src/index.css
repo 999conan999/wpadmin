@@ -227,3 +227,20 @@ code {
   background-color: rgb(163, 158, 168) !important;
   color: whitesmoke;
 }
+.smo{
+  color: red;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.smo:hover{
+  color: #2185d0;
+}
+.priva{
+  color:#db2828;
+}
+.publ{
+  color: green;
+}
+.danhvt:hover{
+  background-color: #e9e9e9  !important;
+}

@@ -1,10 +1,10 @@
 import React, { Component  } from 'react';
-import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accordion, Icon} from 'semantic-ui-react';
+import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accordion, Icon,Select} from 'semantic-ui-react';
 import EditorWrap from './editorwrap';
 import * as lang from './constants/language';
 import FileMedia from './fileMedia';
  
-class ModalEditerPost extends Component {
+class ModalEditerCategory extends Component {
     constructor (props) {
         super(props)
         this.state = {
@@ -123,34 +123,27 @@ return_image=(list_img,type_media)=>{
         }
     }
 }
-//***************Status */
-action_change_status=(e,data)=>{
-    this.props.action_change_status(data.value);
-}
+
     render() {
         const { activeIndex } =  this.state;
-        const {data_source,id_post}=this.props;
+        const {data_source,id_category}=this.props;
 
         return (<React.Fragment>
             <Modal
-                size={"large"}
+                size={"small"}
                 open={this.props.open}
             >
-                <Modal.Header className='blackw'>{id_post==-2?lang.CREATE_POST:lang.EDIT_POST} </Modal.Header>
+                <Modal.Header className='blackw'>{id_category==-2?lang.CREATE_CATEGORY:lang.EDIT_CATEGORY} </Modal.Header>
                 <Modal.Content className='blackw'>
                     <Segment raised className='xyg '>
                         <Header as='h3' className='clh'>*{lang.INPORTANT_POST}:</Header>
                         <Segment raised className={data_source.categorys_result.length>0?'okok':''}>
                             <Header as='h4'>{lang.CATEGORY_POST}: </Header>
-                            <Dropdown
-                                placeholder='Category'
-                                fluid
-                                multiple
-                                search
-                                selection
+                            <Select  
                                 options={data_source.categorys_list}
-                                onChange={this.action_change_category}
+                                // defaultValue={''} 
                                 value={data_source.categorys_result}
+                                onChange={this.action_change_category}
                             />
                         </Segment>
                         <Segment raised  className={data_source.template.selected!=-1?'okok':''}>
@@ -242,7 +235,7 @@ action_change_status=(e,data)=>{
                             </Accordion.Title>
                             <Accordion.Content active={activeIndex === 1}>
                             <p>
-                                👉 <a href={lang.URL_HDSD_SEO_SCHEMA} target="_blank">{lang.TITLE_HDSD_SEO_SCHEMA}</a>
+                                 👉 <a href={lang.URL_HDSD_SEO_SCHEMA} target="_blank">{lang.TITLE_HDSD_SEO_SCHEMA}</a>
                             </p>
                             </Accordion.Content>
 
@@ -286,15 +279,9 @@ action_change_status=(e,data)=>{
                     
                 </Modal.Content>
                 <Modal.Actions>
-                    <Dropdown options={[
-                        {key:'private',text:lang.PRIVATE,value:'private'},
-                        {key:'publish',text:lang.PUBLISH,value:'publish'}
-                    ]}
-                        value={data_source.status}
-                        onChange={this.action_change_status}
-                    />
+                   
                     <Button negative onClick={this.click_action_no}>{lang.NO}</Button>
-                    <Button positive onClick={this.click_action_yes} >{id_post==-2?lang.ACTION_POST:lang.UPDATE}</Button>
+                    <Button positive onClick={this.click_action_yes} >{id_category==-2?lang.ACTION_POST:lang.UPDATE}</Button>
                 </Modal.Actions>
             </Modal>
             <FileMedia
@@ -320,4 +307,4 @@ action_change_status=(e,data)=>{
         }
     }
 }
-export default ModalEditerPost;
+export default ModalEditerCategory;

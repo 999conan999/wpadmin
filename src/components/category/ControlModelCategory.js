@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-// import {} from 'semantic-ui-react';
-import ModalEditerPost from '../lib/ModalEditerPost';
-class ControlModelPost extends Component {
+import ModalEditerCategory from '../lib/ModalEditerCategory';
+class ControlModelCategory extends Component {
     constructor (props) {
         super(props)
         this.state = {
             data_source:{
                 categorys_list:[],
-                categorys_result:[],
+                categorys_result:'',
                 template:{
                     selected:-1,
                     template_list:[]
@@ -23,21 +22,20 @@ class ControlModelPost extends Component {
                 code_header:'',
                 code_body:'',
                 code_footer:'',
-                status:'publish'
 
             },
-            id_post:-1
+            id_category:-1
         }
     }
     //
     componentWillReceiveProps(nextProps){
-        if(nextProps.id_post!==this.props.id_post){
-            if(nextProps.id_post==-2){
+        if(nextProps.id_category!==this.props.id_category){
+            if(nextProps.id_category==-2){
                 // create post
             }else{
                 // edit post
             }
-            console.log(nextProps.id_post);
+            console.log(nextProps.id_category);
             console.log('thay doi here!')
             //Perform some operation
             // this.setState({someState: someValue });
@@ -45,72 +43,70 @@ class ControlModelPost extends Component {
             // [todo]
         }
     }
-    // componentDidMount(){
-    //         // this.setState({
-    //         //    data_source:{
-    //         //         categorys_list:[
-    //         //             {
-    //         //                 key:12,
-    //         //                 text:'Giường sắt',
-    //         //                 value:12
-    //         //             },
-    //         //             {
-    //         //                 key:13,
-    //         //                 text:'Giường gỗ',
-    //         //                 value:13
-    //         //             },
-    //         //             {
-    //         //                 id:14,
-    //         //                 text:'Giường inox',
-    //         //                 value:14
-    //         //             },
-    //         //         ],
-    //         //         categorys_result:[12,13],
-    //         //         template:{
-    //         //             selected:0,
-    //         //             template_list:[
-    //         //                 {
-    //         //                     id:0,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_0'
-    //         //                 },
-    //         //                 {
-    //         //                     id:1,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_1'
-    //         //                 },
-    //         //                 {
-    //         //                     id:2,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_2'
-    //         //                 },
-    //         //             ]
-    //         //         },
-    //         //         title_post:'đây là title bài post',
-    //         //         content_post:'<p>đây là content post</p>',
-    //         //         descriptions:'đây là descriptions',
-    //         //         tags_all:[
-    //         //             {
-    //         //                 key:"giường sắt",
-    //         //                 text:'giường sắt',
-    //         //                 value:'giường sắt'
-    //         //             },
-    //         //             {
-    //         //                 key:"giường gỗ",
-    //         //                 text:'giường gỗ',
-    //         //                 value:'giường gỗ'
-    //         //             }
-    //         //         ],
-    //         //         tags_result:['giường sắt'],
-    //         //         thumnail_post:'http://anbinhnew.com/thumnail.jpg',
-    //         //         schema_seo_list:['schema 1','schema 2'],
-    //         //         // schema_seo_result:'schema 1*+*schema 2',
-    //         //         code_header:'code header',
-    //         //         code_body:'code body',
-    //         //         code_footer:'code footer'
+//    componentDidMount(){
+//     this.setState({
+//                data_source:{
+//                     categorys_list:[
+//                         {
+//                             key:12,
+//                             text:'Giường sắt',
+//                             value:12
+//                         },
+//                         {
+//                             key:13,
+//                             text:'Giường gỗ',
+//                             value:13
+//                         },
+//                         {
+//                             id:14,
+//                             text:'Giường inox',
+//                             value:14
+//                         },
+//                     ],
+//                     categorys_result:12,
+//                     template:{
+//                         selected:0,
+//                         template_list:[
+//                             {
+//                                 id:0,
+//                                 url_demo:'http://anbinhnew.com/demo_tempalte_0'
+//                             },
+//                             {
+//                                 id:1,
+//                                 url_demo:'http://anbinhnew.com/demo_tempalte_1'
+//                             },
+//                             {
+//                                 id:2,
+//                                 url_demo:'http://anbinhnew.com/demo_tempalte_2'
+//                             },
+//                         ]
+//                     },
+//                     title_post:'đây là title bài post',
+//                     content_post:'<p>đây là content post</p>',
+//                     descriptions:'đây là descriptions',
+//                     tags_all:[
+//                         {
+//                             key:"giường sắt",
+//                             text:'giường sắt',
+//                             value:'giường sắt'
+//                         },
+//                         {
+//                             key:"giường gỗ",
+//                             text:'giường gỗ',
+//                             value:'giường gỗ'
+//                         }
+//                     ],
+//                     tags_result:['giường sắt'],
+//                     thumnail_post:'http://anbinhnew.com/thumnail.jpg',
+//                     schema_seo_list:['schema 1','schema 2'],
+//                     // schema_seo_result:'schema 1*+*schema 2',
+//                     code_header:'code header',
+//                     code_body:'code body',
+//                     code_footer:'code footer'
 
-    //         //     }
-    //         // });
-    // }
-    // convert_data_server=(data)=>{
-    // }
+//                 }
+//             });
+//         }
     //**************** Category */
     action_change_category=(categorys_result)=>{
         let {data_source}=this.state;
@@ -252,20 +248,12 @@ class ControlModelPost extends Component {
         })
     }
     //
-    //********************delete img to thumnail */
-    action_change_status=(value)=>{
-        let {data_source}=this.state;
-        data_source.status=value;
-        this.setState({
-            data_source:data_source
-        })
-    }
     //
     render() {
-        let {data_source,id_post} =this.state;
+        let {data_source,id_category} =this.state;
         return (
             <React.Fragment>
-                <ModalEditerPost
+                <ModalEditerCategory 
                     open={this.props.open}
                     data_source={data_source}
                     action_change_category={this.action_change_category}
@@ -283,22 +271,21 @@ class ControlModelPost extends Component {
                     action_change_code_footer={this.action_change_code_footer} 
                     action_add_img_to_content={this.action_add_img_to_content} 
                     action_add_img_thumnail={this.action_add_img_thumnail} 
-                    action_change_status={this.action_change_status} 
                     delete_img_thumnail={this.delete_img_thumnail} 
                     click_action_yes={this.click_action_yes} 
                     click_action_no={this.click_action_no} 
-                    id_post={this.props.id_post}
+                    id_category={this.props.id_category}
                 />
             </React.Fragment>
         )
     }
 //
-click_action_no=()=>{
-    this.props.close_model_edit()
-}
+    click_action_no=()=>{
+        this.props.close_model_edit()
+    }
 //
-click_action_yes=()=>{
-    alert('yest') // [todo]
+    click_action_yes=()=>{
+        alert('yest ' + this.props.id_category) // [todo]
+    }
 }
-}
-export default ControlModelPost;
+export default ControlModelCategory
