@@ -3,6 +3,7 @@ import PageEdit from './page/pagetEdit';
 import PostEdit from './post/postEdit';
 import Home from './home/pagetEdit';
 import CategoryEdit from './category/CategoryEdit';
+import SetupPage from './setup_Page/SetupPage';
 import {  Menu, Segment } from 'semantic-ui-react'
 import * as lang from './lib/constants/language'
 import {
@@ -37,12 +38,12 @@ class Index extends Component {
                     to="/posts"
                     className={`link item ${activeItem=="posts"?"active":""}`}
                     onClick={()=>this.clickMenu("posts")}
-                >{lang.POSTS}</Link>
+                ><i class="fa-solid fa-file-word menu-icon-d"></i>{lang.POSTS}</Link>
                 <Link 
                     to="/categorys"
                     className={`link item ${activeItem=="categorys"?"active":""}`}
                     onClick={()=>this.clickMenu("categorys")}
-                >{lang.CATEGORY}</Link>
+                ><i class="fa-solid fa-folder-tree menu-icon-d"></i>{lang.CATEGORY}</Link>
                 <Link 
                     to="/pages"
                     className={`link item ${activeItem=="pages"?"active":""}`}
@@ -53,12 +54,18 @@ class Index extends Component {
                     className={`link item ${activeItem=="home"?"active":""}`}
                     onClick={()=>this.clickMenu("home")}
                 >Home</Link>
+                <Link 
+                    to="/setups"
+                    className={`link item ${activeItem=="setups"?"active":""}`}
+                    onClick={()=>this.clickMenu("setups")}
+                ><i class="fa-solid fa-gears menu-icon-d"></i>{lang.SETUP_PAGE}</Link>
                 
             </Menu>
                 
                 <Routes>
                      <Route exact path="/" element={<PostEdit/>}/>
                      <Route exact path="/posts" element={<PostEdit/>}/>
+                     <Route exact path="/setups" element={<SetupPage/>}/>
                      <Route exact path="/pages" element={<PageEdit/>}/>
                      <Route exact path="/home" element={<Home/>}/>
                      <Route exact path="/categorys" element={<CategoryEdit/>}/>

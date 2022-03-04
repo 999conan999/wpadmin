@@ -68,13 +68,7 @@ action_change_content_post=(value)=>{
 action_change_descriptions=(e,data)=>{
     this.props.action_change_descriptions(data.value);
 }
-//****************** Tags
-handleAddition = (e, { value }) => {
-    this.props.action_add_tags(value);
-}
-handleChange = (e, { value }) => {
-    this.props.action_change_tags(value);
-}
+
 // **************** Schema
 show_schema=(schema_seo_list)=>{
     let result=[];
@@ -136,9 +130,9 @@ return_image=(list_img,type_media)=>{
                 <Modal.Header className='blackw'>{id_category==-2?lang.CREATE_CATEGORY:lang.EDIT_CATEGORY} </Modal.Header>
                 <Modal.Content className='blackw'>
                     <Segment raised className='xyg '>
-                        <Header as='h3' className='clh'>*{lang.INPORTANT_POST}:</Header>
+                        <Header as='h3' className='clh'>*{lang.INPORTANT_CATEGORY}:</Header>
                         <Segment raised className={data_source.categorys_result.length>0?'okok':''}>
-                            <Header as='h4'>{lang.CATEGORY_POST}: </Header>
+                            <Header as='h4'>{lang.CATEGORY_POST_PARENT}: </Header>
                             <Select  
                                 options={data_source.categorys_list}
                                 // defaultValue={''} 
@@ -159,7 +153,7 @@ return_image=(list_img,type_media)=>{
                             />
                         </Segment>
                         <Segment raised className={data_source.content_post!=''?'okok':''}>
-                            <Header as='h4'>{lang.CONTENT_POST}:</Header>
+                            <Header as='h4'>{lang.CONTENT_CATEGORY}:</Header>
                             <Button basic color='blue' size='small' className='btn-mgb'
                                 onClick={()=>this.setState({open:true,type_media:'add_img_to_content',multi_select:true})}
                             ><i className="fas fa-photo-video vv"></i>Add Media</Button>
@@ -168,18 +162,8 @@ return_image=(list_img,type_media)=>{
                                 content_post={data_source.content_post}
                             />
                         </Segment>
-                        <Segment raised className={data_source.descriptions!=''?'okok':''}>
-                            <Header as='h4'>{lang.DESCRIPTION_POST}:</Header>
-                            <Form>
-                                <TextArea placeholder=''
-                                    value={data_source.descriptions}
-                                    onChange={this.action_change_descriptions}
-                                />
-                               
-                            </Form>
-                        </Segment>
                         <Segment.Group horizontal>
-                            <Segment raised className={data_source.tags_result.length>0?'hsj okok':'hsj'}>
+                            {/* <Segment raised className={data_source.tags_result.length>0?'hsj okok':'hsj'}>
                                 <Header as='h4'>{lang.TAGS_POST}:</Header>
                                 <Dropdown
                                     options={data_source.tags_all}
@@ -193,6 +177,16 @@ return_image=(list_img,type_media)=>{
                                     onAddItem={this.handleAddition}
                                     onChange={this.handleChange}
                                 />
+                            </Segment> */}
+                            <Segment raised className={data_source.descriptions!=''?'okok':''}>
+                                <Header as='h4'>{lang.DESCRIPTION_POST}:</Header>
+                                <Form>
+                                    <TextArea placeholder=''
+                                        value={data_source.descriptions}
+                                        onChange={this.action_change_descriptions}
+                                    />
+                                
+                                </Form>
                             </Segment>
                             <Segment raised  className={data_source.thumnail_post!=''?'okok':''}>
                                 <Header as='h4'>{lang.THUMNAIL_POST}:</Header>

@@ -84,19 +84,6 @@ class ControlModelCategory extends Component {
 //                     title_post:'đây là title bài post',
 //                     content_post:'<p>đây là content post</p>',
 //                     descriptions:'đây là descriptions',
-//                     tags_all:[
-//                         {
-//                             key:"giường sắt",
-//                             text:'giường sắt',
-//                             value:'giường sắt'
-//                         },
-//                         {
-//                             key:"giường gỗ",
-//                             text:'giường gỗ',
-//                             value:'giường gỗ'
-//                         }
-//                     ],
-//                     tags_result:['giường sắt'],
 //                     thumnail_post:'http://anbinhnew.com/thumnail.jpg',
 //                     schema_seo_list:['schema 1','schema 2'],
 //                     // schema_seo_result:'schema 1*+*schema 2',
@@ -147,34 +134,7 @@ class ControlModelCategory extends Component {
             data_source:data_source
         })
     }
-    //********************Tags post */
-    action_change_tags=(value)=>{
-        let {data_source}=this.state;
-        data_source.tags_result=value;
-        this.setState({
-            data_source:data_source
-        })
-    }
-    action_add_tags=(value)=>{
-        let {data_source}=this.state;
-        let tags_all=data_source.tags_all;
-        let is_add_ok=true;
-        tags_all.forEach(e => {
-            if(e.name==value) is_add_ok=false;
-        });
-        if(is_add_ok){
-            tags_all.push({
-                key:value,
-                text:value,
-                value:value
-            });
-            data_source.tags_all=tags_all;
-            this.setState({
-                data_source:data_source
-            })
-        }
-
-    }
+ 
     //********************** Schema post */
     action_change_schema=(value,i)=>{
         let {data_source}=this.state;
@@ -261,8 +221,6 @@ class ControlModelCategory extends Component {
                     action_change_title={this.action_change_title} 
                     action_change_content_post={this.action_change_content_post} 
                     action_change_descriptions={this.action_change_descriptions} 
-                    action_change_tags={this.action_change_tags} 
-                    action_add_tags={this.action_add_tags} 
                     action_change_schema={this.action_change_schema} 
                     action_delete_schema={this.action_delete_schema} 
                     action_add_schema={this.action_add_schema} 

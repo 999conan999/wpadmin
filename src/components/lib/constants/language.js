@@ -45,3 +45,7 @@ export const EDIT ='Sửa';
 export const DELETE ='Xóa';
 export const DELETE_THIS_CATEGORY ='Xóa danh mục: ';
 export const EDIT_CATEGORY ='Chỉnh sửa danh mục';
+export const INPORTANT_CATEGORY ='Nội dung chính của danh mục';
+export const CATEGORY_POST_PARENT ='Lựa chọn danh mục cha';
+export const CONTENT_CATEGORY ='Nội dung danh mục';
+export const SETUP_PAGE ='Cài Đặt chung';
