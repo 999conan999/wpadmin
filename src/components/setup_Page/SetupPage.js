@@ -1,15 +1,61 @@
 import React, { Component } from 'react';
 import { Segment,Header,Button,Message,Form,TextArea,Input,Dropdown } from 'semantic-ui-react';
 import Sortable from '../lib/sortable';
+import FileMedia from '../lib/fileMedia';
 import * as lang from '../lib/constants/language'
 class SetupPage extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            treeData:[{title:'text 1'},{title:'text 1'},{title:'text 3'},{title:'text 4'}]
+            treeData:[{title:'text 1'},{title:'text 1'},{title:'text 3'},{title:'text 4'}],
+            open:false,
+            type_media:'',// addIcon,addlogo,addBtn
+            data:{
+                icon_url:'',
+                logo_url:'',
+            }
+
         }
     }
+    //
+    return_image=(arr_img)=>{
+        let {type_media,data}=this.state;
+        console.log("🚀 ~ file: SetupPage.js ~ line 18 ~ SetupPage ~ arr_img", arr_img)
+        if(type_media=='addIcon'){
+            if(arr_img.length>0){
+                data.icon_url=arr_img[0].url;
+                this.setState({
+                    data:data
+                })
+            }
+        }else if(type_media=='addlogo'){
+            if(arr_img.length>0){
+                data.logo_url=arr_img[0].url;
+                this.setState({
+                    data:data
+                })
+            }
+        }
+        
+    }
+    // delete icon
+    action_delete_img_icon=()=>{
+        let {data}=this.state;
+        data.icon_url='';
+        this.setState({
+            data:data
+        })
+    }
+    // delete logo
+    action_delete_img_logo=()=>{
+        let {data}=this.state;
+        data.logo_url='';
+        this.setState({
+            data:data
+        })
+    }
     render() {
+        let {data}=this.state;
         return (
             <React.Fragment>
                 <Message  color='brown'>
@@ -27,8 +73,12 @@ class SetupPage extends Component {
                         ngay trên đầu tab của trình duyệt web, thì đây chính là icon mà bạn sẽ cài đặt ở phần này. <a href=''  target="_blank">Xem hướng dẫn ở đây.</a>
                     </p>
                     <Button basic color='blue' size='small' className='btn-mgb'
-                        // onClick={()=>this.setState({open:true,type_media:'add_img_thumnail',multi_select:false})}
+                        onClick={()=>this.setState({open:true,type_media:'addIcon'})}
                     ><i className="fas fa-photo-video vv"></i>Add Media</Button>
+                    {data.icon_url!=''&&<div className='thum'><div className='vvv'>
+                        <img src={data.icon_url} height={'50px'}/>
+                        <i class="fa-solid fa-x xxz zzx" onClick={this.action_delete_img_icon}></i>
+                    </div></div>}
                 </Segment>
 
                <Segment raised className='okok'>
@@ -37,8 +87,12 @@ class SetupPage extends Component {
                         Phần này là cái logo hiển thị phía trên cùng của 1 trang, 1 bài viết. <a href=''  target="_blank">Xem hướng dẫn ở đây.</a>
                     </p>
                     <Button basic color='blue' size='small' className='btn-mgb'
-                        // onClick={()=>this.setState({open:true,type_media:'add_img_thumnail',multi_select:false})}
+                         onClick={()=>this.setState({open:true,type_media:'addlogo'})}
                     ><i className="fas fa-photo-video vv"></i>Add Media</Button>
+                     {data.logo_url!=''&&<div className='thum'><div className='vvv'>
+                        <img src={data.logo_url} height={'50px'}/>
+                        <i class="fa-solid fa-x xxz zzx" onClick={this.action_delete_img_logo}></i>
+                    </div></div>}
                 </Segment>
 
                <Segment raised className='okok'>
@@ -235,7 +289,13 @@ class SetupPage extends Component {
                        <Button negative onClick={this.click_action_no}>{lang.NO}</Button>
                        <Button positive onClick={this.click_action_yes} >{lang.UPDATE}</Button>
                     </div>
-
+                <FileMedia
+                    open={this.state.open}
+                    type_media={this.state.type_media}
+                    return_image={this.return_image}
+                    multi_select={false}
+                    set_open_media={(open)=>this.setState({open:open})}
+                />
              <div style={{height:'80px'}}></div>
             </React.Fragment>
         )
