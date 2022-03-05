@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
 import FileMedia from '../lib/fileMedia';
+import Sortable from '../lib/sortable'
 class Home extends Component {
     constructor (props) {
         super(props)
@@ -19,15 +20,7 @@ class Home extends Component {
     render() {
         return (
             <React.Fragment>
-                edit Home
-                <p>========================</p>
-                 <FileMedia
-                    multi_select={this.state.multi_select}
-                    open={this.state.open}
-                    type_media={this.state.type_media}
-                    return_image={this.return_image}
-                    set_open_media={(open)=>this.setState({open:open})}
-                 />
+                <Sortable/>
             </React.Fragment>
         )
     }
