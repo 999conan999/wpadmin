@@ -125,7 +125,7 @@ class CategoryEdit extends Component {
         data.forEach((e,i) => {
             result.push(
                 <Table.Row key={i} className='danhvt'>
-                    <Table.Cell>{e.position}<b><a href={e.url}  target="_blank">{e.name} <i class="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
+                    <Table.Cell>{e.position}<b><a href={e.url}  target="_blank">{e.name} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
                     <Table.Cell>
                         <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
                         <Label className='delete-css' onClick={()=>this.clickDeleteCategory(e.id,e.name)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>

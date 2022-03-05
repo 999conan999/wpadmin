@@ -38,12 +38,12 @@ class Index extends Component {
                     to="/posts"
                     className={`link item ${activeItem=="posts"?"active":""}`}
                     onClick={()=>this.clickMenu("posts")}
-                ><i class="fa-solid fa-file-word menu-icon-d"></i>{lang.POSTS}</Link>
+                ><i className="fa-solid fa-file-word menu-icon-d"></i>{lang.POSTS}</Link>
                 <Link 
                     to="/categorys"
                     className={`link item ${activeItem=="categorys"?"active":""}`}
                     onClick={()=>this.clickMenu("categorys")}
-                ><i class="fa-solid fa-folder-tree menu-icon-d"></i>{lang.CATEGORY}</Link>
+                ><i className="fa-solid fa-folder-tree menu-icon-d"></i>{lang.CATEGORY}</Link>
                 <Link 
                     to="/pages"
                     className={`link item ${activeItem=="pages"?"active":""}`}
@@ -58,7 +58,7 @@ class Index extends Component {
                     to="/setups"
                     className={`link item ${activeItem=="setups"?"active":""}`}
                     onClick={()=>this.clickMenu("setups")}
-                ><i class="fa-solid fa-gears menu-icon-d"></i>{lang.SETUP_PAGE}</Link>
+                ><i className="fa-solid fa-gears menu-icon-d"></i>{lang.SETUP_PAGE}</Link>
                 
             </Menu>
                 

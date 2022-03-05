@@ -7,20 +7,82 @@ class SetupPage extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            treeData:[{title:'text 1'},{title:'text 1'},{title:'text 3'},{title:'text 4'}],
+            keyz:0,
+            code_value_i:null,
+            value_update:{},
+            treeData:[],
             open:false,
-            type_media:'',// addIcon,addlogo,addBtn
+            type_media:'',// addIcon,addlogo,codeValue
+            value_category:{value:""},
+            value_page:{value:""},
+            value_custom_text:{
+                text:'',
+                url:''
+            },
             data:{
                 icon_url:'',
                 logo_url:'',
+                category_list:[
+                    {
+                        title:'giường sắt 1',
+                        key:'giường sắt 1',
+                        text:'giường sắt 1',
+                        value:'giường sắt 1',
+                        url:'https://anbinhnew.com'
+                    },
+                    {
+                        title:'giường gỗ 1',
+                        key:'giường gỗ 1',
+                        text:'giường gỗ 1',
+                        value:'giường gỗ 1',
+                        url:'https://anbinhnew.com'
+                    },
+                    {
+                        title:'giường inox 1',
+                        key:'giường inox 1',
+                        text:'giường inox 1',
+                        value:'giường inox 1',
+                        url:'https://anbinhnew.com'
+                    },
+                ],
+                page_list:[
+                    {
+                        title:'Liên hệ',
+                        key:'Liên hệ',
+                        text:'Liên hệ',
+                        value:'Liên hệ',
+                        url:'https://anbinhnew.com'
+                    },
+                    {
+                        title:'Tư vấn',
+                        key:'Tư vấn',
+                        text:'Tư vấn',
+                        value:'Tư vấn',
+                        url:'https://anbinhnew.com'
+                    },
+                    {
+                        title:'Login',
+                        key:'Login',
+                        text:'Login',
+                        value:'Login',
+                        url:'https://anbinhnew.com'
+                    },
+                ],
+                treeData:[],// data value on server
+                code_contacts:{
+                    code_source:'[value1] code value 2 [value2]',
+                    code_value:['giá trị 1','giá trị 2'],
+                },
+                code_header:'',
+                code_body:'',
+                code_footer:'',
             }
 
         }
     }
     //
     return_image=(arr_img)=>{
-        let {type_media,data}=this.state;
-        console.log("🚀 ~ file: SetupPage.js ~ line 18 ~ SetupPage ~ arr_img", arr_img)
+        let {type_media,data,code_value_i}=this.state;
         if(type_media=='addIcon'){
             if(arr_img.length>0){
                 data.icon_url=arr_img[0].url;
@@ -31,6 +93,13 @@ class SetupPage extends Component {
         }else if(type_media=='addlogo'){
             if(arr_img.length>0){
                 data.logo_url=arr_img[0].url;
+                this.setState({
+                    data:data
+                })
+            }
+        }else if(type_media=='codeValue'){
+            if(arr_img.length>0){
+                data.code_contacts.code_value[code_value_i]=arr_img[0].url;
                 this.setState({
                     data:data
                 })
@@ -54,8 +123,162 @@ class SetupPage extends Component {
             data:data
         })
     }
-    render() {
+    // change cateogry
+    onChange_category=(e, { value })=>{
         let {data}=this.state;
+        let js=null;
+        data.category_list.forEach((e,i) => {
+            if(e.value==value){
+                js=i;
+            }
+        });
+        if(js!=null){
+            this.setState({
+                value_category:data.category_list[js]
+            })
+        }
+
+    }
+    // change page
+    onChange_page=(e, { value })=>{
+        let {data}=this.state;
+        let js=null;
+        data.page_list.forEach((e,i) => {
+            if(e.value==value){
+                js=i;
+            }
+        });
+        if(js!=null){
+            this.setState({
+                value_page:data.page_list[js]
+            })
+        }
+
+    }
+    // add category
+    action_add_Cateogry=()=>{
+        let {value_category,keyz}=this.state;
+        if(value_category.value!=''){
+            // treeData.push(value_category);
+            this.setState({
+                keyz:keyz+1,
+                value_update:value_category,
+                value_category:{
+                    value:""
+                },
+            })
+        }else{
+            alert('Bạn nên chọn một giá trị cho DANH MỤC')
+        }
+    }
+    // add page
+    action_add_page=()=>{
+        let {value_page,keyz}=this.state;
+        if(value_page.value!=''){
+            // treeData.push(value_category);
+            this.setState({
+                keyz:keyz+1,
+                value_update:value_page,
+                value_page:{
+                    value:""
+                },
+            })
+        }else{
+            alert('Bạn nên chọn một giá trị cho TRANG')
+        }
+    }
+    // change text
+    action_change_text=(e,{value})=>{
+        let {value_custom_text}=this.state;
+        value_custom_text.text=value;
+        this.setState({
+            value_custom_text:value_custom_text
+        })
+    }
+    // change url
+    action_change_url=(e,{value})=>{
+        let {value_custom_text}=this.state;
+        value_custom_text.url=value;
+        this.setState({
+            value_custom_text:value_custom_text
+        })
+    }
+    // add custom text url
+    action_add_text=()=>{
+        let {value_custom_text,keyz}=this.state;
+        if(value_custom_text.text!=''&&value_custom_text.url!=""){
+            this.setState({
+                keyz:keyz+1,
+                value_update:{
+                    title:value_custom_text.text,
+                    key:value_custom_text.text,
+                    text:value_custom_text.text,
+                    value:value_custom_text.text,
+                    url:value_custom_text.url
+                },
+                value_custom_text:{
+                    text:'',
+                    url:''
+                },
+            })
+        }else{
+            alert('Bạn nên điền đầy đủ trường TEXT và trường URL!')
+        }
+    }
+    action_change_code_source=(e,{value})=>{
+        let {data}=this.state;
+        data.code_contacts.code_source=value;
+        this.setState({data:data});
+    }
+    // show code value
+    show_code_value=(code_value)=>{
+        let result=[];
+        code_value.forEach((e,i) => {
+            result.push(
+                <div className='wrap-bb' key={i}>
+                    <span>Giá trị {i}:</span>
+                    <div className='inputT'>
+                        <Input 
+                            size='small' 
+                            placeholder={`Nhập giá trị ${i}`} fluid 
+                            value={e}
+                            onChange={(e,{value})=>this.action_change_code_value(value,i)}
+                        />
+                        
+                    </div>
+                    <div className='inputM'>
+                        <Button basic color='blue' size='small' className='btn-mgb'
+                            onClick={()=>this.setState({open:true,type_media:'codeValue',code_value_i:i})}
+                        ><i className="fas fa-photo-video vv"></i>Add Media</Button>
+                        <i className="fa-solid fa-circle-xmark uuz" onClick={()=>this.action_delete_code_value(i)}></i>
+                        {e.search('http')!=-1&&<img src={e} height={'50px'}/>}
+                    </div>
+                </div>
+            )
+        });
+        return result;
+    }
+    // change code value
+    action_change_code_value=(value,i)=>{
+        let {data}=this.state;
+        data.code_contacts.code_value[i]=value;
+        this.setState({data:data})
+    }
+    // add new code value
+    action_add_code_value=()=>{
+        let {data}=this.state;
+        data.code_contacts.code_value.push('');
+        this.setState({data:data})
+    }
+    // delete code value
+    action_delete_code_value=(i)=>{
+        let {data}=this.state;
+        data.code_contacts.code_value.splice(i,1);
+        this.setState({data:data})
+    }
+
+    render() {
+        let {data,value_category,value_page,value_custom_text}=this.state;
         return (
             <React.Fragment>
                 <Message  color='brown'>
@@ -77,7 +300,7 @@ class SetupPage extends Component {
                     ><i className="fas fa-photo-video vv"></i>Add Media</Button>
                     {data.icon_url!=''&&<div className='thum'><div className='vvv'>
                         <img src={data.icon_url} height={'50px'}/>
-                        <i class="fa-solid fa-x xxz zzx" onClick={this.action_delete_img_icon}></i>
+                        <i className="fa-solid fa-x xxz zzx" onClick={this.action_delete_img_icon}></i>
                     </div></div>}
                 </Segment>
 
@@ -91,7 +314,7 @@ class SetupPage extends Component {
                     ><i className="fas fa-photo-video vv"></i>Add Media</Button>
                      {data.logo_url!=''&&<div className='thum'><div className='vvv'>
                         <img src={data.logo_url} height={'50px'}/>
-                        <i class="fa-solid fa-x xxz zzx" onClick={this.action_delete_img_logo}></i>
+                        <i className="fa-solid fa-x xxz zzx" onClick={this.action_delete_img_logo}></i>
                     </div></div>}
                 </Segment>
 
@@ -113,12 +336,14 @@ class SetupPage extends Component {
                                                 fluid
                                                 search
                                                 selection
-                                                options={[{key:1,text:'giường sắt',value:1},{key:2,text:'giường gỗ',value:2},]}
+                                                options={data.category_list}
+                                                value={value_category.value}
+                                                onChange={this.onChange_category}
                                             />
                                         </div>
                                         <div className='hhv'>
-                                            <Button icon className='add-da' onClick={this.props.action_add_schema}>
-                                                <i class="fa-solid fa-plus"></i>
+                                            <Button icon className='add-da' onClick={this.action_add_Cateogry}>
+                                                <i className="fa-solid fa-plus"></i>
                                             </Button>
                                         </div>
                                     </div>
@@ -132,12 +357,14 @@ class SetupPage extends Component {
                                                 fluid
                                                 search
                                                 selection
-                                                options={[{key:1,text:'giường sắt',value:1},{key:2,text:'giường gỗ',value:2},]}
+                                                options={data.page_list}
+                                                value={value_page.value}
+                                                onChange={this.onChange_page}
                                             />
                                         </div>
                                         <div className='hhv'>
-                                            <Button icon className='add-da' onClick={this.props.action_add_schema}>
-                                                <i class="fa-solid fa-plus"></i>
+                                            <Button icon className='add-da' onClick={this.action_add_page}>
+                                                <i className="fa-solid fa-plus"></i>
                                             </Button>
                                         </div>
                                     </div>
@@ -149,19 +376,19 @@ class SetupPage extends Component {
                                             <span>Text:</span>
                                             <Input 
                                                 placeholder='Text' fluid  size='small'
-                                                // value={data_source.title_post}
-                                                // onChange={this.action_change_title}
+                                                value={value_custom_text.text}
+                                                onChange={this.action_change_text}
                                             />
                                             <span>Url:</span>
                                             <Input 
                                                 placeholder='http://google.com/xyz' fluid  size='small'
-                                                // value={data_source.title_post}
-                                                // onChange={this.action_change_title}
+                                                value={value_custom_text.url}
+                                                onChange={this.action_change_url}
                                             />
                                         </div>
                                         <div className='hhv'>
-                                            <Button icon className='add-da' onClick={this.props.action_add_schema}>
-                                                <i class="fa-solid fa-plus"></i>
+                                            <Button icon className='add-da' onClick={this.action_add_text}>
+                                                <i className="fa-solid fa-plus"></i>
                                             </Button>
                                         </div>
                                     </div>
@@ -172,6 +399,8 @@ class SetupPage extends Component {
                                     treeData={this.state.treeData}
                                     change_treeData={(treeData)=>this.setState({treeData:treeData})}
                                     maxDepth={2}
+                                    keyz={this.state.keyz}
+                                    value_update={this.state.value_update}
                                 />
                             </Segment>
                         </Segment.Group>
@@ -187,67 +416,14 @@ class SetupPage extends Component {
                         <TextArea 
                             rows={4}
                             placeholder='Chèn code hiển thị ở đây.'
-                            // value={data_source.descriptions}
-                            // onChange={this.action_change_descriptions}
+                            value={data.code_contacts.code_source}
+                            onChange={this.action_change_code_source}
                         />
                     </Form>
                     <div className='wrap-kk'>
-                        <div className='wrap-bb'>
-                            <span>Giá trị 1:</span>
-                            <div className='inputT'>
-                                <Input 
-                                    size='small' 
-                                    placeholder='Nhập giá trị 1' fluid 
-                                    
-                                    // value={data_source.title_post}
-                                    // onChange={this.action_change_title}
-                                />
-                            </div>
-                            <div className='inputM'>
-                                <Button basic color='blue' size='small' className='btn-mgb'
-                                    // onClick={()=>this.setState({open:true,type_media:'add_img_thumnail',multi_select:false})}
-                                ><i className="fas fa-photo-video vv"></i>Add Media</Button>
-                            </div>
-                        </div>
-                        {/*  */}
-                        <div className='wrap-bb'>
-                            <span>Giá trị 2:</span>
-                            <div className='inputT'>
-                                <Input 
-                                    size='small' 
-                                    placeholder='Nhập giá trị 2' fluid 
-                                    
-                                    // value={data_source.title_post}
-                                    // onChange={this.action_change_title}
-                                />
-                            </div>
-                            <div className='inputM'>
-                                <Button basic color='blue' size='small' className='btn-mgb'
-                                    // onClick={()=>this.setState({open:true,type_media:'add_img_thumnail',multi_select:false})}
-                                ><i className="fas fa-photo-video vv"></i>Add Media</Button>
-                            </div>
-                        </div>
-                        {/*  */}
-                        <div className='wrap-bb'>
-                            <span>Giá trị 3:</span>
-                            <div className='inputT'>
-                                <Input 
-                                    size='small' 
-                                    placeholder='Nhập giá trị 3' fluid 
-                                    
-                                    // value={data_source.title_post}
-                                    // onChange={this.action_change_title}
-                                />
-                            </div>
-                            <div className='inputM'>
-                                <Button basic color='blue' size='small' className='btn-mgb'
-                                    // onClick={()=>this.setState({open:true,type_media:'add_img_thumnail',multi_select:false})}
-                                ><i className="fas fa-photo-video vv"></i>Add Media</Button>
-                            </div>
-                        </div>
-                        {/*  */}
-                        <Button icon className='add-da' onClick={this.props.action_add_schema}>
-                             <i class="fa-solid fa-plus"></i>
+                        {this.show_code_value(data.code_contacts.code_value)}
+                        <Button icon className='add-da' onClick={this.action_add_code_value}>
+                             <i className="fa-solid fa-plus"></i>
                         </Button>
                     </div>                    
                 </Segment>
@@ -261,8 +437,12 @@ class SetupPage extends Component {
                             <Header as='h4'>Header:</Header>
                             <Form>
                                 <TextArea placeholder='Code here.' rows={10}
-                                    // value={data_source.code_header}
-                                    // onChange={this.action_change_code_header}
+                                    value={data.code_header}
+                                    onChange={(e,{value})=>{
+                                        let {data}=this.state;
+                                        data.code_header=value;
+                                        this.setState({data:data})
+                                    }}
                                 />
                             </Form>
                         </Segment>
@@ -270,17 +450,25 @@ class SetupPage extends Component {
                             <Header as='h4'>Body:</Header>
                             <Form>
                                 <TextArea placeholder='Code here.' rows={10}
-                                    // value={data_source.code_body}
-                                    // onChange={(e,data)=>this.props.action_change_code_body(data.value)}
+                                    value={data.code_body}
+                                    onChange={(e,{value})=>{
+                                        let {data}=this.state;
+                                        data.code_body=value;
+                                        this.setState({data:data})
+                                    }}
                                 />
                             </Form>
                         </Segment>
                         <Segment raised className='okok'>
                             <Header as='h4'>Footer:</Header>
                             <Form>
-                                <TextArea placeholder='Code more' rows={10}
-                                    // value={data_source.code_footer}
-                                    // onChange={(e,data)=>this.props.action_change_code_footer(data.value)}
+                                <TextArea placeholder='Code here' rows={10}
+                                     value={data.code_footer}
+                                     onChange={(e,{value})=>{
+                                         let {data}=this.state;
+                                         data.code_footer=value;
+                                         this.setState({data:data})
+                                     }}
                                 />
                             </Form>
                         </Segment>

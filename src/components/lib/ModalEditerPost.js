@@ -87,7 +87,7 @@ show_schema=(schema_seo_list)=>{
                         onChange={(e,data)=>this.action_change_schema(data,i)}
                     />
                 </Form>
-                <i class="fa-solid fa-trash-can rmx" onClick={()=>this.action_delete_schema(i)}></i>
+                <i className="fa-solid fa-trash-can rmx" onClick={()=>this.action_delete_schema(i)}></i>
             </Segment>)
     });
     return result;
@@ -250,7 +250,7 @@ action_change_status=(e,data)=>{
                         <p className='uet'><a href={lang.GENERATOR_SCHEMA_URL} target="_blank">{lang.GENERATOR_SCHEMA_WEB}</a></p>
                         {this.show_schema(data_source.schema_seo_list)}
                         <Button icon className='add-da' onClick={this.props.action_add_schema}>
-                             <i class="fa-solid fa-plus"></i>
+                             <i className="fa-solid fa-plus"></i>
                         </Button>
                     </Segment>
                     <Segment raised className='xyg' >

@@ -133,7 +133,7 @@ class PostEdit extends Component {
             //
             result.push(
                 <Table.Row key={i} className='danhvt'>
-                    <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i class="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
+                    <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
                     <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
                     <Table.Cell>
 

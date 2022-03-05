@@ -78,7 +78,7 @@ class FileMedia extends Component {
           <img style={{width:"80px"}} src={e.url} 
             onClick={()=>this.action_click_img(e,multi_select)}
           />
-          <i class={`fa-solid fa-trash-can delez ${is_selecte?'show':''}`}
+          <i className={`fa-solid fa-trash-can delez ${is_selecte?'show':''}`}
             onClick={()=>this.action_delete_img(e)}
           ></i>
         </div>)

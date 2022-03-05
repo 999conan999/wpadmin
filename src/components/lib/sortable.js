@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import SortableTree from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css'; // This only needs to be imported once in your app
-import {  removeNodeAtPath } from '@nosferatu500/react-sortable-tree';
+import {  removeNodeAtPath ,addNodeUnderParent} from '@nosferatu500/react-sortable-tree';
 
 class Sortable extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            // treeData: [
-            //     { title: "Chicken"},
-            //     { title: "Chicken1"},
-            //     { title: "Chicken2"},
-            // ]
-          };
+            key:0
+        };
     }
     removeNode=(rowInfo)=>{
         let {node, treeIndex, path} = rowInfo;
@@ -27,6 +23,23 @@ class Sortable extends Component {
             
 
     }
+    //
+    componentWillReceiveProps(nextProps){
+        if(nextProps.keyz!==this.props.keyz){
+        let newTree = addNodeUnderParent({
+            treeData: this.props.treeData,
+            parentKey: null,
+            expandParent: true,
+            getNodeKey:({ treeIndex }) => treeIndex,
+            newNode:nextProps.value_update
+          });
+          this.props.change_treeData(newTree.treeData)
+            //Perform some operation
+            this.setState({keyz: nextProps.keyz });
+        }
+    }
+    //
+
     render() {
         return (
             <React.Fragment>
@@ -37,11 +50,12 @@ class Sortable extends Component {
                         maxDepth={this.props.maxDepth}
                         generateNodeProps={rowInfo => ({
                             buttons: [
-                                    <i class="fa-solid fa-x xxz" onClick={(event) => this.removeNode(rowInfo)}></i>
+                                    <i className="fa-solid fa-x xxz" onClick={(event) => this.removeNode(rowInfo)}></i>
                                    ],
                            
                          })}
                     />
+                    {/* <button onClick={this.test}>ccccccccccc</button> */}
                 </div>
             </React.Fragment>
         )
