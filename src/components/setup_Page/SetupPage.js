@@ -23,55 +23,57 @@ class SetupPage extends Component {
                 icon_url:'',
                 logo_url:'',
                 category_list:[
-                    {
-                        title:'giường sắt 1',
-                        key:'giường sắt 1',
-                        text:'giường sắt 1',
-                        value:'giường sắt 1',
-                        url:'https://anbinhnew.com'
-                    },
-                    {
-                        title:'giường gỗ 1',
-                        key:'giường gỗ 1',
-                        text:'giường gỗ 1',
-                        value:'giường gỗ 1',
-                        url:'https://anbinhnew.com'
-                    },
-                    {
-                        title:'giường inox 1',
-                        key:'giường inox 1',
-                        text:'giường inox 1',
-                        value:'giường inox 1',
-                        url:'https://anbinhnew.com'
-                    },
+                    // {
+                    //     title:'giường sắt 1',
+                    //     key:'giường sắt 1',
+                    //     text:'giường sắt 1',
+                    //     value:'giường sắt 1',
+                    //     url:'https://anbinhnew.com'
+                    // },
+                    // {
+                    //     title:'giường gỗ 1',
+                    //     key:'giường gỗ 1',
+                    //     text:'giường gỗ 1',
+                    //     value:'giường gỗ 1',
+                    //     url:'https://anbinhnew.com'
+                    // },
+                    // {
+                    //     title:'giường inox 1',
+                    //     key:'giường inox 1',
+                    //     text:'giường inox 1',
+                    //     value:'giường inox 1',
+                    //     url:'https://anbinhnew.com'
+                    // },
                 ],
                 page_list:[
-                    {
-                        title:'Liên hệ',
-                        key:'Liên hệ',
-                        text:'Liên hệ',
-                        value:'Liên hệ',
-                        url:'https://anbinhnew.com'
-                    },
-                    {
-                        title:'Tư vấn',
-                        key:'Tư vấn',
-                        text:'Tư vấn',
-                        value:'Tư vấn',
-                        url:'https://anbinhnew.com'
-                    },
-                    {
-                        title:'Login',
-                        key:'Login',
-                        text:'Login',
-                        value:'Login',
-                        url:'https://anbinhnew.com'
-                    },
+                    // {
+                    //     title:'Liên hệ',
+                    //     key:'Liên hệ',
+                    //     text:'Liên hệ',
+                    //     value:'Liên hệ',
+                    //     url:'https://anbinhnew.com'
+                    // },
+                    // {
+                    //     title:'Tư vấn',
+                    //     key:'Tư vấn',
+                    //     text:'Tư vấn',
+                    //     value:'Tư vấn',
+                    //     url:'https://anbinhnew.com'
+                    // },
+                    // {
+                    //     title:'Login',
+                    //     key:'Login',
+                    //     text:'Login',
+                    //     value:'Login',
+                    //     url:'https://anbinhnew.com'
+                    // },
                 ],
                 treeData:[],// data value on server
                 code_contacts:{
-                    code_source:'[value1] code value 2 [value2]',
-                    code_value:['giá trị 1','giá trị 2'],
+                    code_source:'',
+                    code_value:[],
+                    // code_source:'[value1] code value 2 [value2]',
+                    // code_value:['giá trị 1','giá trị 2'],
                 },
                 code_header:'',
                 code_body:'',
@@ -168,7 +170,7 @@ class SetupPage extends Component {
                 },
             })
         }else{
-            alert('Bạn nên chọn một giá trị cho DANH MỤC')
+            alert(lang.ALERT_1)
         }
     }
     // add page
@@ -184,7 +186,7 @@ class SetupPage extends Component {
                 },
             })
         }else{
-            alert('Bạn nên chọn một giá trị cho TRANG')
+            alert(lang.ALERT_2)
         }
     }
     // change text
@@ -222,7 +224,7 @@ class SetupPage extends Component {
                 },
             })
         }else{
-            alert('Bạn nên điền đầy đủ trường TEXT và trường URL!')
+            alert(lang.ALERT_3)
         }
     }
     action_change_code_source=(e,{value})=>{
@@ -236,11 +238,11 @@ class SetupPage extends Component {
         code_value.forEach((e,i) => {
             result.push(
                 <div className='wrap-bb' key={i}>
-                    <span>Giá trị {i}:</span>
+                    <span>{lang.VALUE} {i}:</span>
                     <div className='inputT'>
                         <Input 
                             size='small' 
-                            placeholder={`Nhập giá trị ${i}`} fluid 
+                            placeholder={`${lang.VALUE_ADD} ${i}`} fluid 
                             value={e}
                             onChange={(e,{value})=>this.action_change_code_value(value,i)}
                         />
@@ -282,18 +284,17 @@ class SetupPage extends Component {
         return (
             <React.Fragment>
                 <Message  color='brown'>
-                    <Message.Header>Chú thích:</Message.Header>
+                    <Message.Header>{lang.NOTIFY}:</Message.Header>
                     <Message.List items={[
-                          'Mọi thứ cài đặt ở đây, nó sẽ được hiển thị trên tất cả các trang.',
-                          'Hỗ trợ chèn code google analytic, facebook,... mọi thứ các bạn muốn.',
-                          'Hỗ trợ chèn code thanh liên hệ.',
+                          lang.NOTIFY_1,
+                          lang,lang.NOTIFY_2,
+                          lang.NOTIFY_3,
                     ]} />
                 </Message>
                <Segment raised className='okok'>
-                    <Header as='h4' className='clh'>*Chọn icon cho trang web: </Header>
+                    <Header as='h4' className='clh'>*{lang.ICON_WEB} </Header>
                     <p>
-                        Khi bạn truy cập vào 1 trang web bằng 1 trình duyệt, ví dụ là chrome, trên tab mở đó, bạn có thấy 1 icon nhỏ xinh
-                        ngay trên đầu tab của trình duyệt web, thì đây chính là icon mà bạn sẽ cài đặt ở phần này. <a href=''  target="_blank">Xem hướng dẫn ở đây.</a>
+                        {lang.NOTIFY_ICON_WEB} <a href={lang.NOTIFY_ICON_WEB_HDSD_URL}  target="_blank">{lang.NOTIFY_WEB_HDSD_TITLE}</a>
                     </p>
                     <Button basic color='blue' size='small' className='btn-mgb'
                         onClick={()=>this.setState({open:true,type_media:'addIcon'})}
@@ -305,9 +306,9 @@ class SetupPage extends Component {
                 </Segment>
 
                <Segment raised className='okok'>
-                    <Header as='h4' className='clh'>*Chọn logo cho trang web: </Header>
+                    <Header as='h4' className='clh'>*{lang.LOGO_WEB} </Header>
                     <p>
-                        Phần này là cái logo hiển thị phía trên cùng của 1 trang, 1 bài viết. <a href=''  target="_blank">Xem hướng dẫn ở đây.</a>
+                        {lang.NOTIFY_LOGO_WEB} <a href={lang.NOTIFY_LOGO_WEB_HDSD_URL}  target="_blank">{lang.NOTIFY_WEB_HDSD_TITLE}</a>
                     </p>
                     <Button basic color='blue' size='small' className='btn-mgb'
                          onClick={()=>this.setState({open:true,type_media:'addlogo'})}
@@ -319,20 +320,20 @@ class SetupPage extends Component {
                 </Segment>
 
                <Segment raised className='okok'>
-                    <Header as='h4' className='clh'>*Cài đặt menu: </Header>
+                    <Header as='h4' className='clh'>*{lang.MENU_WEB} </Header>
                     <p>
-                        cài đặt thanh menu cho trang web. <a href=''  target="_blank">Xem hướng dẫn ở đây.</a>
+                         {lang.NOTIFY_MENU_WEB}<a href={lang.NOTIFY_MENU_WEB_HDSD_URL}  target="_blank">{lang.NOTIFY_WEB_HDSD_TITLE}</a>
                     </p>
                  
 
                     <Segment.Group horizontal>
                             <Segment raised className={'okok mrz'}>
                                 <div>
-                                    <p>Thêm danh mục:</p>
+                                    <p>{lang.ADD_CATEGORY}:</p>
                                     <div className='iih'>
                                         <div className='hhz'>
                                             <Dropdown
-                                                placeholder='Chọn danh mục'
+                                                placeholder={lang.HOLDER_ADD_CATEGORY}
                                                 fluid
                                                 search
                                                 selection
@@ -349,11 +350,11 @@ class SetupPage extends Component {
                                     </div>
                                 </div>                                
                                 <div className='iih'>
-                                    <p>Thêm trang:</p>
+                                    <p>{lang.ADD_PAGE}</p>
                                     <div>
                                         <div className='hhz'>
                                             <Dropdown
-                                                placeholder='Chọn trang'
+                                                placeholder={lang.HOLDER_ADD_PAGE}
                                                 fluid
                                                 search
                                                 selection
@@ -370,7 +371,7 @@ class SetupPage extends Component {
                                     </div>
                                 </div>                                
                                 <div className='iih'>
-                                    <p>Thêm đường dẫn tùy chọn:</p>
+                                    <p>{lang.ADD_CUSTOM_TEXT}</p>
                                     <div>
                                         <div className='hhz'>
                                             <span>Text:</span>
@@ -408,14 +409,14 @@ class SetupPage extends Component {
                 </Segment>
 
                <Segment raised className='okok'>
-                    <Header as='h4' className='clh'>*Chèn nút liên hệ: </Header>
+                    <Header as='h4' className='clh'>*{lang.CONTACT_CODE_WEB}</Header>
                     <p>
-                        Bạn thích tạo các nút liên hệ ví dụ như gọi điện, liên hệ facebook, Zalo,... thì đây là phần cài đặt cho nó đấy nhé! <a href=''  target="_blank">Xem hướng dẫn ở đây.</a>
+                        {lang.NOTIFY_CONTACT_CODE_WEB} <a href={lang.NOTIFY_CONTACT_CODE_HDSD_URL}  target="_blank">{lang.NOTIFY_WEB_HDSD_TITLE}</a>
                     </p>
                     <Form>
                         <TextArea 
                             rows={4}
-                            placeholder='Chèn code hiển thị ở đây.'
+                            placeholder={lang.ADD_CODE_HERE}
                             value={data.code_contacts.code_source}
                             onChange={this.action_change_code_source}
                         />
@@ -429,9 +430,9 @@ class SetupPage extends Component {
                 </Segment>
 
                 <Segment raised className='xyg' >
-                        <Header as='h4' className='clh'>*{lang.ADVANCED_SETING}:</Header>
+                        <Header as='h4' className='clh'>*{lang.ADD_CODE}</Header>
                         <p>
-                            Dưới đây là phần chèn code cho tất cả các trang. Thích hợp sử dụng cho chèn code google analytic, google ads, facebook,...
+                            {lang.NOTIFY_ADD_CODE}<a href={lang.NOTIFY_ADD_CODE_HDSD_URL}  target="_blank">{lang.NOTIFY_WEB_HDSD_TITLE}</a>
                         </p>
                         <Segment raised className='okok'>
                             <Header as='h4'>Header:</Header>
