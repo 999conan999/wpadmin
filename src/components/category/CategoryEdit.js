@@ -144,7 +144,7 @@ class CategoryEdit extends Component {
             <React.Fragment>
                 <Segment.Group horizontal className='assd'>
                     <Segment>
-                        <Button primary onClick={()=>this.action_click_create_category(-2)}>
+                        <Button  primary onClick={()=>this.action_click_create_category(-2)}>
                             <i className="fas fa-plus addcss"></i>
                             {lang.CREATE_CATEGORY}
                         </Button>

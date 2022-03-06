@@ -78,6 +78,7 @@ class SetupPage extends Component {
                 code_header:'',
                 code_body:'',
                 code_footer:'',
+                css_code:'',
             }
 
         }
@@ -434,6 +435,19 @@ class SetupPage extends Component {
                         <p>
                             {lang.NOTIFY_ADD_CODE}<a href={lang.NOTIFY_ADD_CODE_HDSD_URL}  target="_blank">{lang.NOTIFY_WEB_HDSD_TITLE}</a>
                         </p>
+                        <Segment raised className='okok'>
+                            <Header as='h4'>CSS code:</Header>
+                            <Form>
+                                <TextArea placeholder='Code here.' rows={10}
+                                    value={data.css_code}
+                                    onChange={(e,{value})=>{
+                                        let {data}=this.state;
+                                        data.css_code=value;
+                                        this.setState({data:data})
+                                    }}
+                                />
+                            </Form>
+                        </Segment>
                         <Segment raised className='okok'>
                             <Header as='h4'>Header:</Header>
                             <Form>

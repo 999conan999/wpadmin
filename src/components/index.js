@@ -48,12 +48,12 @@ class Index extends Component {
                     to="/pages"
                     className={`link item ${activeItem=="pages"?"active":""}`}
                     onClick={()=>this.clickMenu("pages")}
-                >Pages</Link>
+                ><i class="fa-solid fa-hand menu-icon-d"></i>Pages</Link>
                 <Link 
                     to="/home"
                     className={`link item ${activeItem=="home"?"active":""}`}
                     onClick={()=>this.clickMenu("home")}
-                >Home</Link>
+                ><i class="fa-solid fa-house menu-icon-d"></i>Home</Link>
                 <Link 
                     to="/setups"
                     className={`link item ${activeItem=="setups"?"active":""}`}

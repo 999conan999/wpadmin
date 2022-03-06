@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import {} from 'semantic-ui-react';
-import ModalEditerPost from '../lib/ModalEditerPost';
-class ControlModelPost extends Component {
+import ModalEditerPage from '../lib/ModalEditerPage';
+class ControlModelPage extends Component {
     constructor (props) {
         super(props)
         this.state = {
@@ -12,7 +12,6 @@ class ControlModelPost extends Component {
                     selected:-1,
                     template_list:[]
                 },
-                template_result:-1,
                 title_post:'',
                 content_post:'',
                 descriptions:'',
@@ -26,18 +25,18 @@ class ControlModelPost extends Component {
                 status:'publish'
 
             },
-            id_post:-1
+            id_page:-1
         }
     }
     //
     componentWillReceiveProps(nextProps){
-        if(nextProps.id_post!==this.props.id_post){
-            if(nextProps.id_post==-2){
-                // create post
+        if(nextProps.id_page!==this.props.id_page){
+            if(nextProps.id_page==-2){
+                // create page
             }else{
                 // edit post
             }
-            console.log(nextProps.id_post);
+            console.log(nextProps.id_page);
             console.log('thay doi here!')
             //Perform some operation
             // this.setState({someState: someValue });
@@ -45,81 +44,41 @@ class ControlModelPost extends Component {
             // [todo]
         }
     }
-    // componentDidMount(){
-    //         // this.setState({
-    //         //    data_source:{
-    //         //         categorys_list:[
-    //         //             {
-    //         //                 key:12,
-    //         //                 text:'Giường sắt',
-    //         //                 value:12
-    //         //             },
-    //         //             {
-    //         //                 key:13,
-    //         //                 text:'Giường gỗ',
-    //         //                 value:13
-    //         //             },
-    //         //             {
-    //         //                 id:14,
-    //         //                 text:'Giường inox',
-    //         //                 value:14
-    //         //             },
-    //         //         ],
-    //         //         categorys_result:[12,13],
-    //         //         template:{
-    //         //             selected:0,
-    //         //             template_list:[
-    //         //                 {
-    //         //                     id:0,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_0'
-    //         //                 },
-    //         //                 {
-    //         //                     id:1,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_1'
-    //         //                 },
-    //         //                 {
-    //         //                     id:2,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_2'
-    //         //                 },
-    //         //             ]
-    //         //         },
-    //         //         title_post:'đây là title bài post',
-    //         //         content_post:'<p>đây là content post</p>',
-    //         //         descriptions:'đây là descriptions',
-    //         //         tags_all:[
-    //         //             {
-    //         //                 key:"giường sắt",
-    //         //                 text:'giường sắt',
-    //         //                 value:'giường sắt'
-    //         //             },
-    //         //             {
-    //         //                 key:"giường gỗ",
-    //         //                 text:'giường gỗ',
-    //         //                 value:'giường gỗ'
-    //         //             }
-    //         //         ],
-    //         //         tags_result:['giường sắt'],
-    //         //         thumnail_post:'http://anbinhnew.com/thumnail.jpg',
-    //         //         schema_seo_list:['schema 1','schema 2'],
-    //         //         // schema_seo_result:'schema 1*+*schema 2',
-    //         //         code_header:'code header',
-    //         //         code_body:'code body',
-    //         //         code_footer:'code footer',
-                        ////status:'publish'
-
-    //         //     }
-    //         // });
-    // }
+  componentDidMount(){
+            this.setState({
+               data_source:{
+                    template:{
+                        selected:0,
+                        template_list:[
+                            {
+                                id:0,
+                                url_demo:'http://anbinhnew.com/demo_tempalte_0'
+                            },
+                            {
+                                id:1,
+                                url_demo:'http://anbinhnew.com/demo_tempalte_1'
+                            },
+                            {
+                                id:2,
+                                url_demo:'http://anbinhnew.com/demo_tempalte_2'
+                            },
+                        ]
+                    },
+                    title_post:'đây là title bài post',
+                    content_post:'<p>đây là content post</p>',
+                    descriptions:'đây là descriptions',
+                    thumnail_post:'http://anbinhnew.com/thumnail.jpg',
+                    schema_seo_list:['schema 1','schema 2'],
+                    // schema_seo_result:'schema 1*+*schema 2',
+                    code_header:'code header',
+                    code_body:'code body',
+                    code_footer:'code footer',
+                    status:'publish'
+                }
+            });
+    }
     // convert_data_server=(data)=>{
     // }
-    //**************** Category */
-    action_change_category=(categorys_result)=>{
-        let {data_source}=this.state;
-        data_source.categorys_result=categorys_result;
-        this.setState({
-            data_source:data_source
-        })
-    }
     //******************Templates */
     action_change_template=(i)=>{
         let {data_source}=this.state;
@@ -152,34 +111,7 @@ class ControlModelPost extends Component {
             data_source:data_source
         })
     }
-    //********************Tags post */
-    action_change_tags=(value)=>{
-        let {data_source}=this.state;
-        data_source.tags_result=value;
-        this.setState({
-            data_source:data_source
-        })
-    }
-    action_add_tags=(value)=>{
-        let {data_source}=this.state;
-        let tags_all=data_source.tags_all;
-        let is_add_ok=true;
-        tags_all.forEach(e => {
-            if(e.name==value) is_add_ok=false;
-        });
-        if(is_add_ok){
-            tags_all.push({
-                key:value,
-                text:value,
-                value:value
-            });
-            data_source.tags_all=tags_all;
-            this.setState({
-                data_source:data_source
-            })
-        }
 
-    }
     //********************** Schema post */
     action_change_schema=(value,i)=>{
         let {data_source}=this.state;
@@ -263,19 +195,17 @@ class ControlModelPost extends Component {
     }
     //
     render() {
-        let {data_source,id_post} =this.state;
+        let {data_source} =this.state;
         return (
             <React.Fragment>
-                <ModalEditerPost
+                <ModalEditerPage
                     open={this.props.open}
                     data_source={data_source}
-                    action_change_category={this.action_change_category}
+                    // action_change_category={this.action_change_category}
                     action_change_template={this.action_change_template}
                     action_change_title={this.action_change_title} 
                     action_change_content_post={this.action_change_content_post} 
                     action_change_descriptions={this.action_change_descriptions} 
-                    action_change_tags={this.action_change_tags} 
-                    action_add_tags={this.action_add_tags} 
                     action_change_schema={this.action_change_schema} 
                     action_delete_schema={this.action_delete_schema} 
                     action_add_schema={this.action_add_schema} 
@@ -288,7 +218,7 @@ class ControlModelPost extends Component {
                     delete_img_thumnail={this.delete_img_thumnail} 
                     click_action_yes={this.click_action_yes} 
                     click_action_no={this.click_action_no} 
-                    id_post={this.props.id_post}
+                    id_page={this.props.id_page}
                 />
             </React.Fragment>
         )
@@ -299,7 +229,7 @@ click_action_no=()=>{
 }
 //
 click_action_yes=()=>{
-    alert('yest') // [todo]
+    alert(this.props.id_page) // [todo]
 }
 }
-export default ControlModelPost;
+export default ControlModelPage;
