@@ -127,7 +127,7 @@ action_change_status=(e,data)=>{
                 size={"large"}
                 open={this.props.open}
             >
-                <Modal.Header className='blackw'>{id_page==-2?lang.CREATE_POST:lang.EDIT_POST} </Modal.Header>
+                <Modal.Header className='blackw'>{id_page==-2?lang.CREATE_NEW_PAG:lang.EDIT_PAG} </Modal.Header>
                 <Modal.Content className='blackw'>
                     <Segment raised className='xyg '>
                         <Header as='h3' className='clh'>*{lang.INPORTANT_POST}:</Header>
@@ -136,7 +136,7 @@ action_change_status=(e,data)=>{
                             {this.show_templates(data_source.template)}
                         </Segment>
                         <Segment raised  className={data_source.title_post!=''?'okok':''}>
-                            <Header as='h4'>{lang.TITLE}:</Header>
+                            <Header as='h4'>{lang.TITLE_PAGE}:</Header>
                             <Input 
                                 placeholder='Title' fluid  size='big'
                                 value={data_source.title_post}

@@ -128,7 +128,7 @@ class PostEdit extends Component {
                     <Segment>
                         <Button primary onClick={()=>this.action_click_create_page(-2)}>
                             <i className="fas fa-plus addcss"></i>
-                            {lang.CREATE_POST_NEW}
+                            {lang.CREATE_NEW_PAG}
                         </Button>
                     </Segment>
                     <Segment className='bol0px'></Segment>
