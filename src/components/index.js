@@ -17,7 +17,8 @@ class Index extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            activeItem:"posts"
+            activeItem:"posts",
+            permission_type:"editor"
         }
     }
 
@@ -27,49 +28,64 @@ class Index extends Component {
             activeItem:name
         })
     }
+    //
+    set_permission=(list_permisstion,permission_type)=>{
+        // let permission_org=["administrator","editor",'author','contributor','subscriber'];
+            if(list_permisstion.indexOf(permission_type)!=-1){
+               return true;
+            }else{
+                return false;
+            }
+    }
     render() {
-        const { activeItem } =  this.state;
+        const { activeItem,permission_type } =  this.state;
+        let permission_active_post=this.set_permission(["administrator","editor",'author','contributor'],permission_type);
+        let permission_active_category=this.set_permission(["administrator","editor"],permission_type);
+        let permission_active_page=this.set_permission(["administrator","editor"],permission_type);
+        let permission_active_home=this.set_permission(["administrator","editor"],permission_type);
+        let permission_active_setup=this.set_permission(["administrator","editor"],permission_type);
+        // let permission_active_post=this.set_permission(["administrator","editor",'author','contributor','subscriber']);
         return (
             <Router>
                 
             <Menu attached='top' tabular>
             
-               <Link 
+               {permission_active_post&&<Link 
                     to="/posts"
                     className={`link item ${activeItem=="posts"?"active":""}`}
                     onClick={()=>this.clickMenu("posts")}
-                ><i className="fa-solid fa-file-word menu-icon-d"></i>{lang.POSTS}</Link>
-                <Link 
+                ><i className="fa-solid fa-file-word menu-icon-d"></i>{lang.POSTS}</Link>}
+                {permission_active_category&&<Link 
                     to="/categorys"
                     className={`link item ${activeItem=="categorys"?"active":""}`}
                     onClick={()=>this.clickMenu("categorys")}
-                ><i className="fa-solid fa-folder-tree menu-icon-d"></i>{lang.CATEGORY}</Link>
-                <Link 
+                ><i className="fa-solid fa-folder-tree menu-icon-d"></i>{lang.CATEGORY}</Link>}
+                {permission_active_page&&<Link 
                     to="/pages"
                     className={`link item ${activeItem=="pages"?"active":""}`}
                     onClick={()=>this.clickMenu("pages")}
-                ><i class="fa-solid fa-hand menu-icon-d"></i>Pages</Link>
-                <Link 
+                ><i class="fa-solid fa-hand menu-icon-d"></i>Pages</Link>}
+                {permission_active_home&&<Link 
                     to="/home"
                     className={`link item ${activeItem=="home"?"active":""}`}
                     onClick={()=>this.clickMenu("home")}
-                ><i class="fa-solid fa-house menu-icon-d"></i>Home</Link>
-                <Link 
+                ><i class="fa-solid fa-house menu-icon-d"></i>Home</Link>}
+                {permission_active_setup&&<Link 
                     to="/setups"
                     className={`link item ${activeItem=="setups"?"active":""}`}
                     onClick={()=>this.clickMenu("setups")}
-                ><i className="fa-solid fa-gears menu-icon-d"></i>{lang.SETUP_PAGE}</Link>
+                ><i className="fa-solid fa-gears menu-icon-d"></i>{lang.SETUP_PAGE}</Link>}
                 
             </Menu>
                 
                 <Routes>
-                     <Route exact path="/" element={<PostEdit/>}/>
-                     <Route exact path="/posts" element={<PostEdit/>}/>
-                     <Route exact path="/setups" element={<SetupPage/>}/>
-                     <Route exact path="/pages" element={<PageEdit/>}/>
-                     <Route exact path="/home" element={<Home/>}/>
-                     <Route exact path="/categorys" element={<CategoryEdit/>}/>
-                     <Route exact path="/*" element={<PostEdit/>}/>
+                {(permission_active_category||permission_active_home||permission_active_page||permission_active_setup||permission_active_post)&&<Route exact path="/" element={<PostEdit/>}/>}
+                {permission_active_post&&<Route exact path="/posts" element={<PostEdit />}/>}
+                {permission_active_setup&&<Route exact path="/setups" element={<SetupPage/>}/>}
+                {permission_active_page&&<Route exact path="/pages" element={<PageEdit/>}/>}
+                {permission_active_home&&<Route exact path="/home" element={<Home/>}/>}
+                {permission_active_category&&<Route exact path="/categorys" element={<CategoryEdit/>}/>}
+                {(permission_active_category||permission_active_home||permission_active_page||permission_active_setup||permission_active_post)&&<Route exact path="/*" element={<PostEdit/>}/>}
                 </Routes>
           </Router>
         )
