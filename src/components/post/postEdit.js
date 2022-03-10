@@ -27,28 +27,36 @@ class PostEdit extends Component {
                     title:'title 1',
                     status:'publish',
                     category:['danh muc 1'],
-                    url:'http://localhost:3000/'
+                    url:'http://localhost:3000/',
+                    author_name:"danh 1",
+                    thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
                 },
                 {
                     id:2,
                     title:'title 2',
                     status:'publish',
                     category:['danh muc f','danh muc h','theme wordpres'],
-                    url:'http://localhost:3000/'
+                    url:'http://localhost:3000/',
+                    author_name:"danh 1",
+                    thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
                 },
                 {
                     id:3,
                     title:'title 3',
                     status:'publish',
                     category:['danh muc 3','danh muc 3','theme wordpres 3'],
-                    url:'http://localhost:3000/'
+                    url:'http://localhost:3000/',
+                    author_name:"danh 1",
+                    thumnail_url:'xfc'
                 },
                 {
                     id:4,
                     title:'title 4',
                     status:'private',
                     category:['danh muc 4','danh muc4','theme wordpres'],
-                    url:'http://localhost:3000/'
+                    url:'http://localhost:3000/',
+                    author_name:"danh 1",
+                    thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
                 },
             ]
 
@@ -56,6 +64,7 @@ class PostEdit extends Component {
     }
     //********************************API */
     componentDidMount(){
+   
         //[todo] get all post first here and all category
         // 
     }
@@ -134,6 +143,8 @@ class PostEdit extends Component {
             result.push(
                 <Table.Row key={i} className='danhvt'>
                     <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
+                    <Table.Cell><img src={e.thumnail_url} height="50px"/></Table.Cell>
+                    <Table.Cell><span >{e.author_name}</span></Table.Cell>
                     <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
                     <Table.Cell>
 
@@ -185,6 +196,8 @@ class PostEdit extends Component {
                     <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell >{lang.TITLE}</Table.HeaderCell>
+                        <Table.HeaderCell width="2">Ảnh đại diện</Table.HeaderCell>
+                        <Table.HeaderCell width="2">Tác giả</Table.HeaderCell>
                         <Table.HeaderCell width="1">{lang.STATUS}</Table.HeaderCell>
                         <Table.HeaderCell width="3">{lang.CATEGORY}</Table.HeaderCell>
                         <Table.HeaderCell width="3">{lang.EDIT_DEL}</Table.HeaderCell>
