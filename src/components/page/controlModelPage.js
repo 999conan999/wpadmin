@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
 // import {} from 'semantic-ui-react';
 import ModalEditerPage from '../lib/ModalEditerPage';
+import {TEMPLATE_PAGE} from '../lib/constants/template'
 class ControlModelPage extends Component {
     constructor (props) {
         super(props)
         this.state = {
+            template_list:TEMPLATE_PAGE,
             data_source:{
-                categorys_list:[],
-                categorys_result:[],
-                template:{
-                    selected:-1,
-                    template_list:[]
-                },
+                template_selected:-1,// meta
                 title_post:'',
-                content_post:'',
-                descriptions:'',
-                tags_all:[],
-                tags_result:[],
-                thumnail_post:'',
-                schema_seo_list:[],
-                code_header:'',
-                code_body:'',
-                code_footer:'',
+                content_post:'',//
+                descriptions:'',// meta
+                thumnail_post:'',// meta
+                schema_seo_list:[],// meta
+                code_header:'',// meta
+                code_body:'',// meta
+                code_footer:'',// meta
                 status:'publish'
-
             },
             id_page:-1
         }
@@ -45,44 +39,28 @@ class ControlModelPage extends Component {
         }
     }
   componentDidMount(){
-            this.setState({
-               data_source:{
-                    template:{
-                        selected:0,
-                        template_list:[
-                            {
-                                id:0,
-                                url_demo:'http://anbinhnew.com/demo_tempalte_0'
-                            },
-                            {
-                                id:1,
-                                url_demo:'http://anbinhnew.com/demo_tempalte_1'
-                            },
-                            {
-                                id:2,
-                                url_demo:'http://anbinhnew.com/demo_tempalte_2'
-                            },
-                        ]
-                    },
-                    title_post:'đây là title bài post',
-                    content_post:'<p>đây là content post</p>',
-                    descriptions:'đây là descriptions',
-                    thumnail_post:'http://anbinhnew.com/thumnail.jpg',
-                    schema_seo_list:['schema 1','schema 2'],
-                    // schema_seo_result:'schema 1*+*schema 2',
-                    code_header:'code header',
-                    code_body:'code body',
-                    code_footer:'code footer',
-                    status:'publish'
-                }
-            });
+            // this.setState({
+            //    data_source:{
+            //         template_selected:1,
+            //         title_post:'đây là title bài post',
+            //         content_post:'<p>đây là content post</p>',
+            //         descriptions:'đây là descriptions',
+            //         thumnail_post:'http://anbinhnew.com/thumnail.jpg',
+            //         schema_seo_list:['schema 1','schema 2'],
+            //         // schema_seo_result:'schema 1*+*schema 2',
+            //         code_header:'code header',
+            //         code_body:'code body',
+            //         code_footer:'code footer',
+            //         status:'publish'
+            //     }
+            // });
     }
     // convert_data_server=(data)=>{
     // }
     //******************Templates */
     action_change_template=(i)=>{
         let {data_source}=this.state;
-        data_source.template.selected=i;
+        data_source.template_selected=i;
         this.setState({
             data_source:data_source
         })
@@ -195,13 +173,13 @@ class ControlModelPage extends Component {
     }
     //
     render() {
-        let {data_source} =this.state;
+        let {data_source,template_list} =this.state;
         return (
             <React.Fragment>
                 <ModalEditerPage
                     open={this.props.open}
                     data_source={data_source}
-                    // action_change_category={this.action_change_category}
+                    template_list={template_list}
                     action_change_template={this.action_change_template}
                     action_change_title={this.action_change_title} 
                     action_change_content_post={this.action_change_content_post} 

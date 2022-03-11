@@ -240,6 +240,7 @@ class PostEdit extends Component {
                     open={open}
                     id_post={id_post}
                     close_model_edit={this.close_model_edit}
+                    permission_type={this.props.permission_type}
                 />
             </React.Fragment>
         )

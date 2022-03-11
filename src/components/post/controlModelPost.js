@@ -1,29 +1,26 @@
 import React, { Component } from 'react';
-// import {} from 'semantic-ui-react';
 import ModalEditerPost from '../lib/ModalEditerPost';
+import {TEMPLATE_POST} from '../lib/constants/template'
 class ControlModelPost extends Component {
     constructor (props) {
         super(props)
         this.state = {
+            template_list:TEMPLATE_POST,
             data_source:{
-                categorys_list:[],
-                categorys_result:[],
-                template:{
-                    selected:-1,
-                    template_list:[]
-                },
-                template_result:-1,
-                title_post:'',
-                content_post:'',
-                descriptions:'',
-                tags_all:[],
-                tags_result:[],
-                thumnail_post:'',
-                schema_seo_list:[],
-                code_header:'',
-                code_body:'',
-                code_footer:'',
-                status:'publish'
+                categorys_list:[],//
+                categorys_result:[],//
+                template_selected:-1,//meta
+                title_post:'',//
+                content_post:'',//
+                descriptions:'',//meta
+                tags_all:[],//
+                tags_result:[],//
+                thumnail_post:'',//
+                schema_seo_list:[],//meta array=> by JSON.Stringtify
+                code_header:'',//meta
+                code_body:'',//meta
+                code_footer:'',//meta
+                status:'publish'//
 
             },
             id_post:-1
@@ -46,69 +43,53 @@ class ControlModelPost extends Component {
         }
     }
     // componentDidMount(){
-    //         // this.setState({
-    //         //    data_source:{
-    //         //         categorys_list:[
-    //         //             {
-    //         //                 key:12,
-    //         //                 text:'Giường sắt',
-    //         //                 value:12
-    //         //             },
-    //         //             {
-    //         //                 key:13,
-    //         //                 text:'Giường gỗ',
-    //         //                 value:13
-    //         //             },
-    //         //             {
-    //         //                 id:14,
-    //         //                 text:'Giường inox',
-    //         //                 value:14
-    //         //             },
-    //         //         ],
-    //         //         categorys_result:[12,13],
-    //         //         template:{
-    //         //             selected:0,
-    //         //             template_list:[
-    //         //                 {
-    //         //                     id:0,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_0'
-    //         //                 },
-    //         //                 {
-    //         //                     id:1,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_1'
-    //         //                 },
-    //         //                 {
-    //         //                     id:2,
-    //         //                     url_demo:'http://anbinhnew.com/demo_tempalte_2'
-    //         //                 },
-    //         //             ]
-    //         //         },
-    //         //         title_post:'đây là title bài post',
-    //         //         content_post:'<p>đây là content post</p>',
-    //         //         descriptions:'đây là descriptions',
-    //         //         tags_all:[
-    //         //             {
-    //         //                 key:"giường sắt",
-    //         //                 text:'giường sắt',
-    //         //                 value:'giường sắt'
-    //         //             },
-    //         //             {
-    //         //                 key:"giường gỗ",
-    //         //                 text:'giường gỗ',
-    //         //                 value:'giường gỗ'
-    //         //             }
-    //         //         ],
-    //         //         tags_result:['giường sắt'],
-    //         //         thumnail_post:'http://anbinhnew.com/thumnail.jpg',
-    //         //         schema_seo_list:['schema 1','schema 2'],
-    //         //         // schema_seo_result:'schema 1*+*schema 2',
-    //         //         code_header:'code header',
-    //         //         code_body:'code body',
-    //         //         code_footer:'code footer',
-                        ////status:'publish'
+    //         this.setState({
+    //            data_source:{
+    //                 categorys_list:[
+    //                     {
+    //                         key:12,
+    //                         text:'Giường sắt',
+    //                         value:12
+    //                     },
+    //                     {
+    //                         key:13,
+    //                         text:'Giường gỗ',
+    //                         value:13
+    //                     },
+    //                     {
+    //                         id:14,
+    //                         text:'Giường inox',
+    //                         value:14
+    //                     },
+    //                 ],
+    //                 categorys_result:[12,13],
+    //                 template_selected:0,
+    //                 title_post:'đây là title bài post',
+    //                 content_post:'<p>đây là content post</p>',
+    //                 descriptions:'đây là descriptions',
+    //                 tags_all:[
+    //                     {
+    //                         key:"giường sắt",
+    //                         text:'giường sắt',
+    //                         value:'giường sắt'
+    //                     },
+    //                     {
+    //                         key:"giường gỗ",
+    //                         text:'giường gỗ',
+    //                         value:'giường gỗ'
+    //                     }
+    //                 ],
+    //                 tags_result:['giường sắt'],
+    //                 thumnail_post:'http://anbinhnew.com/thumnail.jpg',
+    //                 schema_seo_list:['schema 1','schema 2'],
+    //                 // schema_seo_result:'schema 1*+*schema 2',
+    //                 code_header:'code header',
+    //                 code_body:'code body',
+    //                 code_footer:'code footer',
+    //                     status:'publish'
 
-    //         //     }
-    //         // });
+    //             }
+    //         });
     // }
     // convert_data_server=(data)=>{
     // }
@@ -123,7 +104,7 @@ class ControlModelPost extends Component {
     //******************Templates */
     action_change_template=(i)=>{
         let {data_source}=this.state;
-        data_source.template.selected=i;
+        data_source.template_selected=i;
         this.setState({
             data_source:data_source
         })
@@ -263,12 +244,13 @@ class ControlModelPost extends Component {
     }
     //
     render() {
-        let {data_source,id_post} =this.state;
+        let {data_source,template_list} =this.state;
         return (
             <React.Fragment>
                 <ModalEditerPost
                     open={this.props.open}
                     data_source={data_source}
+                    template_list={template_list}
                     action_change_category={this.action_change_category}
                     action_change_template={this.action_change_template}
                     action_change_title={this.action_change_title} 
@@ -289,6 +271,7 @@ class ControlModelPost extends Component {
                     click_action_yes={this.click_action_yes} 
                     click_action_no={this.click_action_no} 
                     id_post={this.props.id_post}
+                    permission_type={this.props.permission_type}
                 />
             </React.Fragment>
         )

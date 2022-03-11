@@ -18,7 +18,7 @@ class Index extends Component {
         super(props)
         this.state = {
             activeItem:"posts",
-            permission_type:"editor"
+            permission_type:"administrator"
         }
     }
 
@@ -80,7 +80,7 @@ class Index extends Component {
                 
                 <Routes>
                 {(permission_active_category||permission_active_home||permission_active_page||permission_active_setup||permission_active_post)&&<Route exact path="/" element={<PostEdit/>}/>}
-                {permission_active_post&&<Route exact path="/posts" element={<PostEdit />}/>}
+                {permission_active_post&&<Route exact path="/posts" element={<PostEdit permission_type={permission_type}/>}/>}
                 {permission_active_setup&&<Route exact path="/setups" element={<SetupPage/>}/>}
                 {permission_active_page&&<Route exact path="/pages" element={<PageEdit/>}/>}
                 {permission_active_home&&<Route exact path="/home" element={<Home/>}/>}

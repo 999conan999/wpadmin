@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
 import ModalEditerCategory from '../lib/ModalEditerCategory';
+import {TEMPLATE_CATEGORY} from '../lib/constants/template'
 class ControlModelCategory extends Component {
     constructor (props) {
         super(props)
         this.state = {
+            template_list:TEMPLATE_CATEGORY,
             data_source:{
-                categorys_list:[],
-                categorys_result:'',
-                template:{
-                    selected:-1,
-                    template_list:[]
-                },
-                template_result:-1,
-                title_post:'',
-                content_post:'',
-                descriptions:'',
-                tags_all:[],
-                tags_result:[],
-                thumnail_post:'',
-                schema_seo_list:[],
-                code_header:'',
-                code_body:'',
-                code_footer:'',
+                categorys_list:[],//
+                categorys_result:0,//
+                template_selected:-1,//meta
+                title_post:'',//
+                content_post:'',//
+                descriptions:'',//meta
+                thumnail_post:'',//
+                schema_seo_list:[],//meta array=> by JSON.Stringtify
+                code_header:'',//meta
+                code_body:'',//meta
+                code_footer:'',//meta
 
             },
             id_category:-1
@@ -64,23 +60,7 @@ class ControlModelCategory extends Component {
 //                         },
 //                     ],
 //                     categorys_result:12,
-//                     template:{
-//                         selected:0,
-//                         template_list:[
-//                             {
-//                                 id:0,
-//                                 url_demo:'http://anbinhnew.com/demo_tempalte_0'
-//                             },
-//                             {
-//                                 id:1,
-//                                 url_demo:'http://anbinhnew.com/demo_tempalte_1'
-//                             },
-//                             {
-//                                 id:2,
-//                                 url_demo:'http://anbinhnew.com/demo_tempalte_2'
-//                             },
-//                         ]
-//                     },
+//                     template_selected:1,
 //                     title_post:'đây là title bài post',
 //                     content_post:'<p>đây là content post</p>',
 //                     descriptions:'đây là descriptions',
@@ -105,7 +85,7 @@ class ControlModelCategory extends Component {
     //******************Templates */
     action_change_template=(i)=>{
         let {data_source}=this.state;
-        data_source.template.selected=i;
+        data_source.template_selected=i;
         this.setState({
             data_source:data_source
         })
@@ -210,12 +190,14 @@ class ControlModelCategory extends Component {
     //
     //
     render() {
-        let {data_source,id_category} =this.state;
+        let {data_source,template_list} =this.state;
+        console.log("🚀 ~ file: ControlModelCategory.js ~ line 228 ~ ControlModelCategory ~ render ~ data_source", data_source)
         return (
             <React.Fragment>
                 <ModalEditerCategory 
                     open={this.props.open}
                     data_source={data_source}
+                    template_list={template_list}
                     action_change_category={this.action_change_category}
                     action_change_template={this.action_change_template}
                     action_change_title={this.action_change_title} 

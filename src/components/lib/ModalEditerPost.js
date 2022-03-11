@@ -26,13 +26,13 @@ action_change_category=(e,data)=>{
     this.props.action_change_category(data.value);
 }
 // **************** Templates
-show_templates=(template)=>{
+show_templates=(template_list,template_selected)=>{
     let result=[];
-    let selected=template.selected;
-    if(template.selected==-1){
+    let selected=template_selected;
+    if(template_selected==-1){
         return result;
     }else{
-        template.template_list.forEach((e,i) => {
+        template_list.forEach((e,i) => {
             if(i==selected){
                 result.push(
                     <div className='selecte' key={i}>
@@ -129,8 +129,7 @@ action_change_status=(e,data)=>{
 }
     render() {
         const { activeIndex } =  this.state;
-        const {data_source,id_post}=this.props;
-
+        const {data_source,id_post,template_list}=this.props;
         return (<React.Fragment>
             <Modal
                 size={"large"}
@@ -153,9 +152,9 @@ action_change_status=(e,data)=>{
                                 value={data_source.categorys_result}
                             />
                         </Segment>
-                        <Segment raised  className={data_source.template.selected!=-1?'okok':''}>
+                        <Segment raised  className={data_source.template_selected!=-1?'okok':''}>
                             <Header as='h4'>{lang.TEMPLATE_POST}:</Header>
-                            {this.show_templates(data_source.template)}
+                            {this.show_templates(template_list,data_source.template_selected)}
                         </Segment>
                         <Segment raised  className={data_source.title_post!=''?'okok':''}>
                             <Header as='h4'>{lang.TITLE}:</Header>
@@ -286,11 +285,8 @@ action_change_status=(e,data)=>{
                     
                 </Modal.Content>
                 <Modal.Actions>
-                    <Dropdown options={[
-                        {key:'private',text:lang.PRIVATE,value:'private'},
-                        {key:'publish',text:lang.PUBLISH,value:'publish'}
-                    ]}
-                        value={data_source.status}
+                    <Dropdown options={this.props.permission_type!='contributor'?[{key:'private',text:lang.PRIVATE,value:'private'},{key:'publish',text:lang.PUBLISH,value:'publish'}]:[{key:'private',text:lang.PRIVATE,value:'private'}]}
+                        value={this.props.permission_type!='contributor'?data_source.status:'private'}
                         onChange={this.action_change_status}
                     />
                     <Button negative onClick={this.click_action_no}>{lang.NO}</Button>

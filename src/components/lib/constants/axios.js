@@ -99,14 +99,13 @@ export async function action_create_or_edit_post(data){
     return response;
 }
 const url_remove_post='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/stsop/eteled.php';
-export async function action_remove_post(id){
+export async function action_remove_post_by_id(id){
     let data_send=new FormData();
     data_send.append('idN',id);
     let response= axios.post(url_remove_post, 
         data_send
     )
     .then(function (response) {
-        console.log("🚀 ~ file: axios.js ~ line 89 ~ response", response.data)
         if(response.data.status=="ok"){
             return true
         }else{
@@ -119,157 +118,162 @@ export async function action_remove_post(id){
     })
     return response;
 }
-
-
-
-
-
-
-
-
-//=>> test POSTS ÔK
-export  async function test_post(){
-        let  product_id_list = ['pid1234', 'pid1235']
-        let data=new FormData();
-        product_id_list.forEach((item) => {
-            data.append('product_id_list[x_'+item+']', item);
-        });
-             data.append('danhpro', 'item');
-             data.append('arrynull[]','áda');
-
-            let response= axios.post('http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/stsop/createP.php', 
-            data
-            )
-            .then(function (response) {
-             console.log(response.data)
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-            // console.log("🚀 ~ file: axios.js ~ line 41 ~ test_post ~ response", response)
-
-
-            
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // tesst GET=> OK
-// export async function test_get(){
-//     let data= await axios.get('http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/stsop/tegStsop.php?page=0&category_id=3')
-//     // let data= await axios.get('http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/stsop/tegStsop.php?page=0&data_search=test')
-//         .then(function (response) {
-//             console.log("🚀 ~ file: axios.js ~ line 7 ~ response", response)
-//             // handle success
-//             return response.data
-//         })
-//         .catch(function (error) {
-//             console.log("🚀 ~ file: axios.js ~ line 11 ~ test_get ~ error", error)
-//             // handle error
-//             return {
-//                 data:[],
-//             }
-//         })
-//         .then(function (data) {
-//             return data;
-//         });
-//         // return data;
-//         console.log("🚀 ~ file: axios.js ~ line 22 ~ get_category ~ data", data)
-// }
-
-
-
-// var domain='https://cofa.vn'  
-
-//   export function url(type){
-//     if(type=='img'){
-//       //http://localhost/cofa/wp-content/plugins/addtool/core/rt-img.php?pass=VoThanhDanh_VTD&start_w=0
-//         return domain+'/wp-content/plugins/addtool/core/rt-img.php?pass=VoThanhDanh_VTD&';
-//     }else if(type=='category'){
-//       //http://localhost/cofa/wp-content/plugins/addtool/core/rt-category.php?pass=VoThanhDanh_VTD
-//       return domain+'/wp-content/plugins/addtool/core/rt-category.php?pass=VoThanhDanh_VTD';
-//     }else if(type=='createP'){
-//       //http://localhost/cofa/wp-content/plugins/addtool/core/createP.php
-//       return domain+'/wp-content/plugins/addtool/core/createP.php';
+//
+const url_post_infor='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/stsop/tegrofintsop.php?idN=';
+export async function get_post_infor_by_id(id){
+    let url=url_post_infor+id;
+    return fs_axios_get(url,'OBJECT');
+}
+//
+const url_category_infor='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/cate/tegrofinCate.php?idN=';
+export async function get_category_infor_by_id(id){
+    let url=url_category_infor+id;
+    return fs_axios_get(url,'OBJECT');
+}
+//
+const url_get_all_category='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/cate/tegCate.php';
+export async function get_all_category(){
+    return await fs_axios_get(url_get_all_category,'ARRAY');
+}
+const url_remove_category='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/cate/eteled.php';
+export async function action_remove_category_by_id(id){
+    let data_send=new FormData();
+    data_send.append('idN',id);
+    let response= axios.post(url_remove_category, 
+        data_send
+    )
+    .then(function (response) {
+        if(response.data.status=="ok"){
+            return true
+        }else{
+            return false
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return false
+    })
+    return response;
+}
+//
+const url_create_edit_category='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/cate/etaercCtideC.php';
+// {
+//     idN:-1, // idN = -1 => new category || edit
+//     nameS:'category api ok__update',
+//     contentS:'noi dung cate ne ok__update',
+//     parentIdN:4,
+//     thumnailS:'anbinhnew.com ok__update',
+//     metaA:{
+//         meta_1:'day la the meta_1 ok__update',
+//         meta_2:'day la the meta_2 ok__update',
+//         meta_3:'day la the meta_3 ok__update',
 //     }
-//   }
-
-
-
-//   export async function active_create_post_list(contents){
-//     for(let i=0;i<contents.length;i++) {
-//       let response=await active_post(contents[i])
-//       console.log(response)
-//     };
-//   }
-//   //
-//   async function active_post(content){
-//     return new Promise((resolve,reject)=>{
-//       let response= axios.post(url('createP'), 
-//       axqs(content))
-//       .then(function (response) {
-//         return response
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-//       // setTimeout(()=>{
-//       resolve(response)
-//       // },2000);
-//     })
-//   }
-//   function axqs(d){
-//     let p = new URLSearchParams();
-//     Object.keys(d).forEach(function(key){
-//         p.append(key, this[key]);
-//     }, d);
-//     return p
 // }
-
-//   export async function get_category(){
-//   let data= await axios.get(url('category'))
-//     .then(function (response) {
-//         // handle success
-//         return response.data
-//     })
-//     .catch(function (error) {
-//         // handle error
-//         return {
-//             data:[],
-//             leng:0
-//         }
-//     })
-//     .then(function (data) {
-//         return data;
-//       });
-//       return data;
-//   }
-//   export async function get_img_50(start=0){
-//   let data= await axios.get(url('img')+'start_w='+start)
-//     .then(function (response) {
-//         // handle success
-//         return response.data
-//     })
-//     .catch(function (error) {
-//         // handle error
-//         return {
-//             data:[],
-//             leng:0
-//         }
-//     })
-//     .then(function (data) {
-//         return data;
-//       });
-//       return data;
-//   }
+export async function action_create_or_edit_category(data){
+    let data_send=new FormData();
+    Object.keys(data).forEach(function(key) {
+        if(key=='metaA'){
+            if(Object.keys(data[key]).length>0){
+                Object.keys(data[key]).forEach(function(key_meta) {
+                    data_send.append('metaA['+key_meta+']',data[key][key_meta]);
+                })
+            }else{
+                data_send.append('metaA','null');
+            }
+        }else{
+            data_send.append(key,data[key]);
+        }
+    });
+    //
+    let response= axios.post(url_create_edit_category, 
+        data_send
+    )
+    .then(function (response) {
+        console.log("🚀 ~ file: axios.js ~ line 168 ~ response", response.data)
+        if(response.data.status=="ok"){
+            return true
+        }else{
+            return false
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return false
+    })
+    return response;
+}
+//
+const url_create_edit_page='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/egap/etaercGtideG.php';
+// data={
+//     idN:-1, //==>id=-1 >> create || còn không là edit
+//     titleS:'tiêu đề nè',
+//     contentS:'đây là phần contents',
+//     statusS:'publish',
+//     metaA:{
+//         meta_shortdescript:'đây là mô tả ngăn của thẻ meta',
+//         meta_code_header:'header code',
+//         meta_code_body:'code body'
+//     },
+//     thumnailS:'https://anbinhnew.com/wp-content/uploads/2021/01/giuong-sat-2-tang-cao-cap-mau-trang-dep-nhat-hcm-binh-duong-dong-nai.jpg'
+// }
+export async function action_create_or_edit_page(data){
+    let data_send=new FormData();
+    Object.keys(data).forEach(function(key) {
+        if(key=='metaA'){
+            if(Object.keys(data[key]).length>0){
+                Object.keys(data[key]).forEach(function(key_meta) {
+                    data_send.append('metaA['+key_meta+']',data[key][key_meta]);
+                })
+            }else{
+                data_send.append('metaA','null');
+            }
+        }else{
+            data_send.append(key,data[key]);
+        }
+    });
+    //
+    let response= axios.post(url_create_edit_page, 
+        data_send
+    )
+    .then(function (response) {
+        console.log("🚀 ~ file: axios.js ~ line 227 ~ response", response.data)
+        if(response.data.status=="ok"){
+            return true
+        }else{
+            return false
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return false
+    })
+    return response;
+}
+//
+const url_get_page_list='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/egap/tegegap.php';
+export async function get_all_page(page){
+    let url=url_get_page_list+'?page='+page;
+    return await fs_axios_get(url,'OBJECT');
+}
+//
+const url_remove_page='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/egap/eteled.php';
+export async function action_remove_page_by_id(id){
+    let data_send=new FormData();
+    data_send.append('idN',id);
+    let response= axios.post(url_remove_page, 
+        data_send
+    )
+    .then(function (response) {
+        console.log("🚀 ~ file: axios.js ~ line 267 ~ response", response.data)
+        if(response.data.status=="ok"){
+            return true
+        }else{
+            return false
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return false
+    })
+    return response;
+}
