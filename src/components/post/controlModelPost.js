@@ -1,98 +1,95 @@
 import React, { Component } from 'react';
 import ModalEditerPost from '../lib/ModalEditerPost';
 import {TEMPLATE_POST} from '../lib/constants/template'
+import {get_cate_tag,get_post_infor_by_id,action_create_or_edit_post} from '../lib/constants/axios';
+import {fs_convert_schema_cript} from '../lib/constants/fs';
+import * as lang from '../lib/constants/language';
+import { toast } from 'react-toastify';
 class ControlModelPost extends Component {
     constructor (props) {
         super(props)
         this.state = {
             template_list:TEMPLATE_POST,
             data_source:{
-                categorys_list:[],//
                 categorys_result:[],//
                 template_selected:-1,//meta
                 title_post:'',//
                 content_post:'',//
                 descriptions:'',//meta
-                tags_all:[],//
                 tags_result:[],//
                 thumnail_post:'',//
                 schema_seo_list:[],//meta array=> by JSON.Stringtify
                 code_header:'',//meta
                 code_body:'',//meta
                 code_footer:'',//meta
-                status:'publish'//
+                status:'private'//
 
             },
-            id_post:-1
+            id_post:-1,
+            categorys_list:[],
+            tags_all:[]
         }
     }
     //
-    componentWillReceiveProps(nextProps){
+   async componentWillReceiveProps(nextProps){
         if(nextProps.id_post!==this.props.id_post){
             if(nextProps.id_post==-2){
                 // create post
+                let data_source={
+                id:-1,
+                categorys_result:[],//
+                template_selected:0,//meta
+                title_post:'',//
+                content_post:'',//
+                descriptions:'',//meta
+                tags_result:[],//
+                thumnail_post:'',//
+                schema_seo_list:[],//meta array=> by JSON.Stringtify
+                code_header:'',//meta
+                code_body:'',//meta
+                code_footer:'',//meta
+                status:'private'//
+                };
+                this.setState({
+                    data_source:data_source,
+                    id_post:nextProps.id_post
+                })
             }else{
-                // edit post
+                // edit post [todo=> thêm code ở đây, để convert ra data input]
+                let data_server=await get_post_infor_by_id(nextProps.id_post);
+                if(data_server!='null'){
+                    let data_source={
+                        id:data_server.id,
+                        categorys_result:data_server.categorys_result,//
+                        template_selected:data_server.meta_data.template_selected,//meta
+                        title_post:data_server.title_post,//
+                        content_post:data_server.content_post,//
+                        descriptions:data_server.meta_data.descriptions,//meta
+                        tags_result:data_server.tags_result,//
+                        thumnail_post:data_server.thumnail_post,//
+                        schema_seo_list:JSON.parse(data_server.meta_data.schema_seo_list),//meta array=> by JSON.Stringtify
+                        code_header:data_server.meta_data.code_header,//meta
+                        code_body:data_server.meta_data.code_body,//meta
+                        code_footer:data_server.meta_data.code_footer,//meta
+                        status:data_server.status//
+                    };
+                    this.setState({
+                        data_source:data_source
+                    })
+                }
             }
-            console.log(nextProps.id_post);
-            console.log('thay doi here!')
-            //Perform some operation
-            // this.setState({someState: someValue });
-            // ....
-            // [todo]
+
         }
     }
-    // componentDidMount(){
-    //         this.setState({
-    //            data_source:{
-    //                 categorys_list:[
-    //                     {
-    //                         key:12,
-    //                         text:'Giường sắt',
-    //                         value:12
-    //                     },
-    //                     {
-    //                         key:13,
-    //                         text:'Giường gỗ',
-    //                         value:13
-    //                     },
-    //                     {
-    //                         id:14,
-    //                         text:'Giường inox',
-    //                         value:14
-    //                     },
-    //                 ],
-    //                 categorys_result:[12,13],
-    //                 template_selected:0,
-    //                 title_post:'đây là title bài post',
-    //                 content_post:'<p>đây là content post</p>',
-    //                 descriptions:'đây là descriptions',
-    //                 tags_all:[
-    //                     {
-    //                         key:"giường sắt",
-    //                         text:'giường sắt',
-    //                         value:'giường sắt'
-    //                     },
-    //                     {
-    //                         key:"giường gỗ",
-    //                         text:'giường gỗ',
-    //                         value:'giường gỗ'
-    //                     }
-    //                 ],
-    //                 tags_result:['giường sắt'],
-    //                 thumnail_post:'http://anbinhnew.com/thumnail.jpg',
-    //                 schema_seo_list:['schema 1','schema 2'],
-    //                 // schema_seo_result:'schema 1*+*schema 2',
-    //                 code_header:'code header',
-    //                 code_body:'code body',
-    //                 code_footer:'code footer',
-    //                     status:'publish'
-
-    //             }
-    //         });
-    // }
-    // convert_data_server=(data)=>{
-    // }
+    async componentDidMount(){
+       let data=await get_cate_tag();
+       if(data!=null){
+           this.setState({
+            categorys_list: data.categorys_list,
+            tags_all: data.tags_all
+           })
+       }
+    }
     //**************** Category */
     action_change_category=(categorys_result)=>{
         let {data_source}=this.state;
@@ -244,13 +241,15 @@ class ControlModelPost extends Component {
     }
     //
     render() {
-        let {data_source,template_list} =this.state;
+        let {data_source,template_list,categorys_list,tags_all} =this.state;
         return (
             <React.Fragment>
                 <ModalEditerPost
                     open={this.props.open}
                     data_source={data_source}
                     template_list={template_list}
+                    categorys_list={categorys_list}
+                    tags_all={tags_all}
                     action_change_category={this.action_change_category}
                     action_change_template={this.action_change_template}
                     action_change_title={this.action_change_title} 
@@ -281,8 +280,60 @@ click_action_no=()=>{
     this.props.close_model_edit()
 }
 //
-click_action_yes=()=>{
-    alert('yest') // [todo]
-}
+    click_action_yes=async()=>{
+        // [todo] [todo=> sau này có chỉnh sửa code gì thêm biến ở đây]
+        let {data_source} =this.state;
+        let a=await action_create_or_edit_post({
+            idN:data_source.id,
+            titleS:data_source.title_post,
+            contentS:data_source.content_post,
+            statusS:data_source.status,
+            categoryA:data_source.categorys_result,
+            tagA:data_source.tags_result,
+            thumnailS:data_source.thumnail_post,
+            metaA:{
+                code_body:data_source.code_body,
+                code_footer:data_source.code_footer,
+                code_header:data_source.code_header,
+                descriptions:data_source.descriptions,
+                schema_seo_list:JSON.stringify(data_source.schema_seo_list),
+                schema_seo_result:fs_convert_schema_cript(data_source.schema_seo_list),
+                template_selected:data_source.template_selected
+            },
+        })
+        this.props.close_model_edit();
+        if(a.status==true){
+            if(data_source.id==-1){
+                this.props.add_data_new_post({
+                    id:a.id,
+                    title:data_source.title_post,
+                    status:data_source.status,
+                    category:a.category,//
+                    url:a.url,//
+                    author_name:a.author_name,//
+                    thumnail_url:data_source.thumnail_post
+                });
+                toast.success(lang.SUCCPOST_CREATE,{theme: "colored"})
+            }else{
+                this.props.add_data_update_post({
+                    id:a.id,
+                    title:data_source.title_post,
+                    status:data_source.status,
+                    category:a.category,//
+                    url:a.url,//
+                    author_name:a.author_name,//
+                    thumnail_url:data_source.thumnail_post
+                })
+                toast.success(lang.SUCC_POST_EDIT,{theme: "colored"})
+            }
+            
+        }else{
+            if(data_source.id==-1){
+                toast.error(lang.ERRO_POST_CREATE,{theme: "colored"})
+            }else{
+                toast.error(lang.ERRO_POST_EDIT,{theme: "colored"})
+            }
+        }
+    }
 }
 export default ControlModelPost;

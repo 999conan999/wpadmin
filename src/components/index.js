@@ -5,7 +5,10 @@ import Home from './home/pagetEdit';
 import CategoryEdit from './category/CategoryEdit';
 import SetupPage from './setup_Page/SetupPage';
 import {  Menu, Segment } from 'semantic-ui-react'
-import * as lang from './lib/constants/language'
+import * as lang from './lib/constants/language';
+import 'react-toastify/dist/ReactToastify.css';
+import {alert_toast} from './lib/constants/language';
+import { ToastContainer,toast } from 'react-toastify';
 import {
     BrowserRouter as Router,
     Routes,
@@ -21,7 +24,25 @@ class Index extends Component {
             permission_type:"administrator"
         }
     }
-
+    componentDidMount(){
+        let a=[1,2,3,4,5,6,7];
+        let random = Math.floor(Math.random() * a.length);
+        if(random==1){
+            toast(({ closeToast }) => alert_toast(),{
+                position: "top-right",
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                style:{
+                    backgroundColor:"#f5e8c1",
+                    color:"black"
+                }
+            });
+        }
+    }
     //
     clickMenu=(name)=>{
         this.setState({
@@ -77,6 +98,18 @@ class Index extends Component {
                 ><i className="fa-solid fa-gears menu-icon-d"></i>{lang.SETUP_PAGE}</Link>}
                 
             </Menu>
+                {/* toast */}
+                <ToastContainer
+                    position="top-right"
+                    autoClose={4000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    />
                 
                 <Routes>
                 {(permission_active_category||permission_active_home||permission_active_page||permission_active_setup||permission_active_post)&&<Route exact path="/" element={<PostEdit/>}/>}

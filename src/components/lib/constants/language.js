@@ -1,3 +1,11 @@
+export function alert_toast(){
+    return<div><span className="pinpin">📌</span><span className="pin2">📌</span>
+    <p>* Được thiết kế bởi : <a target="_blank"  href='https://anbinhnew.com'>anbinhnew.com</a></p>
+    <p>* Nhóm thảo luận : <a target="_blank"  href='anbinhnew.com'>facebook</a></p>
+    <p>* Video hướng dẫn : <a target="_blank"  href='anbinhnew.com'>Youtube</a></p>
+    <p>* Nhiều thông tin giá trị, được cập nhật tại : <a target="_blank" href='anbinhnew.com'>anbinhnew.com</a></p>
+    </div>
+};
 export const CREATE_POST_NEW ='Tạo bài viết mới';
 export const CREATE_POST ='Tạo bài viết';
 export const EDIT_POST ='Chỉnh sửa bài viết';
@@ -29,7 +37,7 @@ export const PRIVATE ='Riêng tư';
 export const NO ='Hủy';
 export const UPDATE ='Cập Nhật';
 export const ACTION_POST ='Đăng';
-export const NOTIFY_VALIDATE_TITLE ='Chú ý: TIÊU ĐỀ bài viết không được để trống! hoặc số kí tự > 3';
+export const NOTIFY_VALIDATE_TITLE ='Chú ý: TIÊU ĐỀ bài viết không được để trống! và phải lớn hơn 3 kí tự';
 export const STATUS ='Trạng Thái';
 export const CATEGORY ='Danh Mục';
 export const EDIT_DEL ='Chỉnh sửa/Xóa';
@@ -84,3 +92,12 @@ export const ALERT_3 ='Bạn nên điền đầy đủ trường TEXT và trư�
 export const CREATE_NEW_PAG ='Tạo trang mới';
 export const EDIT_PAG ='Chỉnh sửa trang';
 export const TITLE_PAGE ='Tiêu đề trang';
+export const THUMNAIL ='Ảnh đại diện';
+export const AUTHOR ='Tác giả';
+export const ALL_POST ='Tất cả bài viết';
+export const SUCCESS_DELETE ='Xóa bài viết thành công';
+export const ERRO_DELETE ='Lỗi! không xóa được bài viết.';
+export const ERRO_POST_CREATE ='Lỗi! không tạo được bài viết mới.';
+export const SUCC_POST_EDIT ='Cập nhật mới thành công!';
+export const SUCCPOST_CREATE ='Tạo mới thành công!';
+export const ERRO_POST_EDIT ='Lỗi! không cập nhật được bài viết mới.';

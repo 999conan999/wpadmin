@@ -86,10 +86,19 @@ export async function action_create_or_edit_post(data){
         data_send
     )
     .then(function (response) {
+        // console.log("🚀 ~ file: axios.js ~ line 89 ~ response", response.data)
         if(response.data.status=="ok"){
-            return true
+            return {
+                status:true,
+                id:response.data.id,
+                category:response.data.category,
+                url:response.data.url,
+                author_name:response.data.author_name,
+            }
         }else{
-            return false
+            return {
+                status:false,
+            }
         }
     })
     .catch(function (error) {
@@ -277,3 +286,16 @@ export async function action_remove_page_by_id(id){
     })
     return response;
 }
+//
+const url_page_infor='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/egap/tegrofinegap.php?idN=';
+export async function get_page_infor_by_id(id){
+    let url=url_page_infor+id;
+    return fs_axios_get(url,'OBJECT');
+}
+//
+const url_cate_tag='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/teg_cate_sgat.php';
+export async function get_cate_tag(){
+    let url=url_cate_tag;
+    return fs_axios_get(url,'OBJECT');
+}
+//

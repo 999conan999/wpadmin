@@ -9,7 +9,7 @@ class ControlModelPage extends Component {
             template_list:TEMPLATE_PAGE,
             data_source:{
                 template_selected:-1,// meta
-                title_post:'',
+                title_post:'',//
                 content_post:'',//
                 descriptions:'',// meta
                 thumnail_post:'',// meta
@@ -17,7 +17,7 @@ class ControlModelPage extends Component {
                 code_header:'',// meta
                 code_body:'',// meta
                 code_footer:'',// meta
-                status:'publish'
+                status:'publish'//
             },
             id_page:-1
         }

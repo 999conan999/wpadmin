@@ -81,7 +81,7 @@ class Home extends Component {
         //     },
         //     thumnailS:'https://anbinhnew.com/wp-content/uploads/2021/01/giuong-sat-2-tang-cao-cap-mau-trang-dep-nhat-hcm-binh-duong-dong-nai.jpg'
         // }))
-    console.log(await action_remove_page_by_id(104))
+    // console.log(await action_remove_page_by_id(104))
         //[todo] get all post first here and all category
         // 
     }

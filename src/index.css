@@ -306,3 +306,20 @@ code {
 .uuz:hover{
   color:#b93131;
 }
+.draf{
+  color: rgb(13, 13, 156);
+}
+.pinpin{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 16px;
+  transform: rotate(-10deg);
+}
+.pin2{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-size: 16px;
+  transform: rotate(-10deg);
+}

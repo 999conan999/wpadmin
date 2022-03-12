@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { Button,Segment,Input,Select,Table,Label,Menu,Modal,Header,Dropdown} from 'semantic-ui-react';
 import ControlModelPost from './controlModelPost';
-import * as lang from '../lib/constants/language'
-
+import * as lang from '../lib/constants/language';
+import { toast } from 'react-toastify';
+import {get_posts_by_search,get_all_category,get_posts_by_category_id,action_remove_post_by_id} from '../lib/constants/axios';
+const quantity=25;
 class PostEdit extends Component {
     constructor (props) {
         super(props)
         this.state = {
             id_post:-1,
             open:false,
+            show_see_more:false,
+            page:0,
             openModalDelete:false,
-            listCategory:[
-                { key: -1, text: 'All', value: -1 },
-                { key: 1, text: 'Giường sắt', value: 1 },
-                { key: 2, text: 'Giường gỗ', value: 2 },
-            ],
+            listCategory:[],
             selected_category_id:-1,
             seleted_delete:{
                 id:-1,
@@ -22,72 +22,175 @@ class PostEdit extends Component {
             },
             key_search:'',
             data_list_post:[
-                {
-                    id:1,
-                    title:'title 1',
-                    status:'publish',
-                    category:['danh muc 1'],
-                    url:'http://localhost:3000/',
-                    author_name:"danh 1",
-                    thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
-                },
-                {
-                    id:2,
-                    title:'title 2',
-                    status:'publish',
-                    category:['danh muc f','danh muc h','theme wordpres'],
-                    url:'http://localhost:3000/',
-                    author_name:"danh 1",
-                    thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
-                },
-                {
-                    id:3,
-                    title:'title 3',
-                    status:'publish',
-                    category:['danh muc 3','danh muc 3','theme wordpres 3'],
-                    url:'http://localhost:3000/',
-                    author_name:"danh 1",
-                    thumnail_url:'xfc'
-                },
-                {
-                    id:4,
-                    title:'title 4',
-                    status:'private',
-                    category:['danh muc 4','danh muc4','theme wordpres'],
-                    url:'http://localhost:3000/',
-                    author_name:"danh 1",
-                    thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
-                },
+                // {
+                //     id:1,
+                //     title:'title 1',
+                //     status:'publish',
+                //     category:['danh muc 1'],
+                //     url:'http://localhost:3000/',
+                //     author_name:"danh 1",
+                //     thumnail_url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg'
+                // },
             ]
 
         }
     }
     //********************************API */
-    componentDidMount(){
-   
+  async  componentDidMount(){
+        let listCate=await get_all_category();
+        let listCategory=[{key:-1,text:lang.ALL_POST,value:-1}]
+        listCate.forEach(e => {
+            listCategory.push({
+                key:e.id,
+                value:e.id,
+                text:e.name
+            })
+        });
         //[todo] get all post first here and all category
-        // 
+        let {page,show_see_more}=this.state;
+        let data_list_post=await get_posts_by_search(0,'*');
+        if (data_list_post.length<quantity) {
+            show_see_more=false;
+        }else{
+            show_see_more=true;
+        }
+        this.setState({
+            listCategory:listCategory,
+            data_list_post:data_list_post,
+            page:page+1,
+            show_see_more:show_see_more
+        })
+        
     }
     // get more post
-    action_click_more=()=>{
-        alert('Click xem them')
+    action_click_more=async ()=>{
+        let {selected_category_id,show_see_more}=this.state;
+        if(selected_category_id==-1){
+            // status search || get all
+            let {page,data_list_post,key_search}=this.state;
+            key_search=key_search==""?'*':key_search;
+            let data_list_sv=await get_posts_by_search(page,key_search);
+            if (data_list_sv.length<quantity) {
+                show_see_more=false;
+            }else{
+                show_see_more=true;
+            }
+            data_list_post=[...data_list_post,...data_list_sv]
+            this.setState({
+                data_list_post:data_list_post,
+                page:page+1,
+                show_see_more:show_see_more
+            })
+        }else{
+            let {page,data_list_post}=this.state;
+            let data_list_sv=await get_posts_by_category_id(page,selected_category_id);
+            if (data_list_sv.length<quantity) {
+                show_see_more=false;
+            }else{
+                show_see_more=true;
+            }
+            data_list_post=[...data_list_post,...data_list_sv]
+            this.setState({
+                data_list_post:data_list_post,
+                page:page+1,
+                show_see_more:show_see_more,
+            })
+        }
+
     }
     // search keywork
-    action_click_search=()=>{
+    action_click_search= async ()=>{
         let {key_search}=this.state;
-        alert(key_search)
+        if(key_search!=""){
+            let {show_see_more}=this.state;
+            let data_list_sv=await get_posts_by_search(0,key_search);
+            if (data_list_sv.length<quantity) {
+                show_see_more=false;
+            }else{
+                show_see_more=true;
+            }
+            // data_list_post=[...data_list_post,...data_list_sv]
+            this.setState({
+                data_list_post:data_list_sv,
+                page:1,
+                show_see_more:show_see_more,
+                selected_category_id:-1
+            })
+        }
+        // alert(key_search)
+    }
+    // change search key
+    change_search_key=(e)=>{
+        let key_search=e.target.value;
+        this.setState({
+            key_search:key_search,
+            selected_category_id:-1
+        });
+        clearTimeout(this.time_seach);
+        this.time_seach=setTimeout(async()=>{
+                let {show_see_more}=this.state;
+                key_search=key_search==""?"*":key_search;
+                let data_list_sv=await get_posts_by_search(0,key_search);
+                if (data_list_sv.length<quantity) {
+                    show_see_more=false;
+                }else{
+                    show_see_more=true;
+                }
+                this.setState({
+                    data_list_post:data_list_sv,
+                    page:1,
+                    show_see_more:show_see_more,
+                    selected_category_id:-1
+                })
+        },1000)
+   
     }
     // selected category
-    action_selecte_category=(e,data)=>{
+    action_selecte_category=async(e,data)=>{
         let id=data.value;
-        alert(id);        
-        this.setState({
-            selected_category_id:id
-        })
+        if(id!=-1){
+            let {show_see_more}=this.state;
+            let data_list_sv=await get_posts_by_category_id(0,id);
+            if (data_list_sv.length<quantity) {
+                show_see_more=false;
+            }else{
+                show_see_more=true;
+            }
+            this.setState({
+                data_list_post:data_list_sv,
+                key_search:'',
+                page:1,
+                show_see_more:show_see_more,
+                selected_category_id:id
+
+            })
+        }else{
+            let {show_see_more}=this.state;
+            let data_list_sv=await get_posts_by_search(0,'*');
+            if (data_list_sv.length<quantity) {
+                show_see_more=false;
+            }else{
+                show_see_more=true;
+            }
+            // data_list_post=[...data_list_post,...data_list_sv]
+            this.setState({
+                data_list_post:data_list_sv,
+                key_search:'',
+                page:1,
+                show_see_more:show_see_more,
+                selected_category_id:id
+            })
+        }
+
     }
     //******************************** */
     // modal delete
     setOpenModalDelete=(st)=>{
+        // toast.error('cccc',{theme: "colored"})
+        // toast.success('cccc',{theme: "colored"})
+        // toast.info('cccc',{theme: "colored"})
+
+        //
         this.setState({
             openModalDelete:st
         })
@@ -122,14 +225,34 @@ class PostEdit extends Component {
         })
     }
     // yes delete post
-    action_yes_delete_post=()=>{
-        let {seleted_delete}=this.state;
-        console.log("🚀 ~ file: postEdit.js ~ line 93 ~ PostEdit ~ seleted_delete", seleted_delete)
+    action_yes_delete_post=async ()=>{
+        let {seleted_delete,data_list_post}=this.state;
+        this.setState({
+            openModalDelete:false,
+        })
+        let status_delete= await action_remove_post_by_id(seleted_delete.id);
+        let index=null;
+        if(status_delete){// ok xoa thanh cong
+            data_list_post.forEach((e,i) => {
+                if(e.id==seleted_delete.id){
+                    index=i;
+                }
+            });
+            if(index!=null){
+                data_list_post.splice(index,1);
+            }
+            toast.success(lang.SUCCESS_DELETE,{})
+        }else{
+            toast.error(lang.ERRO_DELETE,{style:{theme: "colored"}})
+        }
         //[todo]
         this.setState({
-            openModalDelete:false
+            data_list_post:data_list_post
         })
     }
+    // fs_delete_post=async ()=>{
+
+    // }
     // show post
     show_post_list=(data)=>{
         let result=[];
@@ -145,7 +268,7 @@ class PostEdit extends Component {
                     <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
                     <Table.Cell><img src={e.thumnail_url} height="50px"/></Table.Cell>
                     <Table.Cell><span >{e.author_name}</span></Table.Cell>
-                    <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
+                    <Table.Cell><span className={e.status=='private'?'priva':e.status=='publish'?'publ':'draf'}>{e.status}</span></Table.Cell>
                     <Table.Cell>
 
                         {rs}
@@ -159,10 +282,29 @@ class PostEdit extends Component {
         });
         return result;
     }
+    // add post new affter post server
+    add_data_new_post=(data)=>{
+        let {data_list_post}=this.state;
+        data_list_post=[...[data],...data_list_post];
+        this.setState({
+            data_list_post:data_list_post
+        })
+    }
+    add_data_update_post=(data)=>{
+        let {data_list_post}=this.state;
+        let index=null;
+        data_list_post.forEach((e,i) => {
+            if(e.id==data.id) index=i;
+        });
+        if(index!=null) data_list_post[index]=data;
+        this.setState({
+            data_list_post:data_list_post
+        })
+    }
 
     //************************ */
     render() {
-        let {listCategory,openModalDelete,id_post,open,data_list_post,seleted_delete} =this.state;
+        let {show_see_more,listCategory,openModalDelete,id_post,open,data_list_post,seleted_delete} =this.state;
         return (
             <React.Fragment>
                 <Segment.Group horizontal className='assd'>
@@ -177,7 +319,8 @@ class PostEdit extends Component {
                         <div className="ui action input">
                             <input type="text" placeholder={lang.TITLE}
                                 value={this.state.key_search}
-                                onChange={(e)=>this.setState({key_search:e.target.value})}
+                                onChange={this.change_search_key}
+                                // onChange={(e)=>this.setState({key_search:e.target.value})}
                             />
                         <button className="ui button bdr" 
                             onClick={this.action_click_search}
@@ -186,7 +329,8 @@ class PostEdit extends Component {
                     <Segment>
                         <Select  
                             options={listCategory}
-                            defaultValue={-1} 
+                            // defaultValue={-1} 
+                            value={this.state.selected_category_id}
                             onChange={this.action_selecte_category}
                         />
                     </Segment> 
@@ -196,8 +340,8 @@ class PostEdit extends Component {
                     <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell >{lang.TITLE}</Table.HeaderCell>
-                        <Table.HeaderCell width="2">Ảnh đại diện</Table.HeaderCell>
-                        <Table.HeaderCell width="2">Tác giả</Table.HeaderCell>
+                        <Table.HeaderCell width="2">{lang.THUMNAIL}</Table.HeaderCell>
+                        <Table.HeaderCell width="2">{lang.AUTHOR}</Table.HeaderCell>
                         <Table.HeaderCell width="1">{lang.STATUS}</Table.HeaderCell>
                         <Table.HeaderCell width="3">{lang.CATEGORY}</Table.HeaderCell>
                         <Table.HeaderCell width="3">{lang.EDIT_DEL}</Table.HeaderCell>
@@ -210,20 +354,21 @@ class PostEdit extends Component {
 
                     <Table.Footer>
                     <Table.Row>
-                        <Table.HeaderCell colSpan='3'>
-                            <span className='smo'
+                        <Table.HeaderCell colSpan='6'>
+                            {show_see_more&&<span className='smo'
                                 onClick={this.action_click_more}
-                            >{lang.SEE_MORE}</span>
+                            >{lang.SEE_MORE}</span>}
                         </Table.HeaderCell>
                     </Table.Row>
                     </Table.Footer>
                 </Table>
+
                 {/* Modal delete */}
                 <Modal
                     onClose={() => this.setOpenModalDelete(false)}
                     open={openModalDelete}
                     >
-                    <Header ><i className="fas fa-trash-alt cds"></i>{lang.DELETE_THIS_POST} {seleted_delete.title}</Header>
+                    <Header ><i className="fas fa-trash-alt cds"></i>{lang.DELETE_THIS_POST} <span style={{color:"blue"}}>{seleted_delete.title}</span></Header>
                     <Modal.Content>
                         <p>{lang.DO_YOU_SURE_DELETE_POST}</p>
                     </Modal.Content>
@@ -241,6 +386,8 @@ class PostEdit extends Component {
                     id_post={id_post}
                     close_model_edit={this.close_model_edit}
                     permission_type={this.props.permission_type}
+                    add_data_new_post={this.add_data_new_post}
+                    add_data_update_post={this.add_data_update_post}
                 />
             </React.Fragment>
         )

@@ -3,7 +3,7 @@ import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accor
 import EditorWrap from './editorwrap';
 import * as lang from './constants/language';
 import FileMedia from './fileMedia';
- 
+import { ToastContainer, toast } from 'react-toastify';
 class ModalEditerPost extends Component {
     constructor (props) {
         super(props)
@@ -129,7 +129,7 @@ action_change_status=(e,data)=>{
 }
     render() {
         const { activeIndex } =  this.state;
-        const {data_source,id_post,template_list}=this.props;
+        const {data_source,id_post,template_list,categorys_list,tags_all}=this.props;
         return (<React.Fragment>
             <Modal
                 size={"large"}
@@ -147,7 +147,7 @@ action_change_status=(e,data)=>{
                                 multiple
                                 search
                                 selection
-                                options={data_source.categorys_list}
+                                options={categorys_list}
                                 onChange={this.action_change_category}
                                 value={data_source.categorys_result}
                             />
@@ -188,7 +188,7 @@ action_change_status=(e,data)=>{
                             <Segment raised className={data_source.tags_result.length>0?'hsj okok':'hsj'}>
                                 <Header as='h4'>{lang.TAGS_POST}:</Header>
                                 <Dropdown
-                                    options={data_source.tags_all}
+                                    options={tags_all}
                                     placeholder='Add tags'
                                     search
                                     selection
@@ -310,7 +310,8 @@ action_change_status=(e,data)=>{
     //
     click_action_yes=()=>{
         if(this.props.data_source.title_post.length<3){
-            alert(lang.NOTIFY_VALIDATE_TITLE)
+            // alert(lang.NOTIFY_VALIDATE_TITLE)
+            toast.info(lang.NOTIFY_VALIDATE_TITLE,{theme: "colored"})
         }else{
             this.props.click_action_yes()
         }
