@@ -3,7 +3,7 @@ import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accor
 import EditorWrap from './editorwrap';
 import * as lang from './constants/language';
 import FileMedia from './fileMedia';
- 
+import {toast } from 'react-toastify';
 class ModalEditerPage extends Component {
     constructor (props) {
         super(props)
@@ -277,7 +277,7 @@ action_change_status=(e,data)=>{
     //
     click_action_yes=()=>{
         if(this.props.data_source.title_post.length<3){
-            alert(lang.NOTIFY_VALIDATE_TITLE)
+            toast.info(lang.NOTIFY_VALIDATE_TITLE,{theme: "colored"})
         }else{
             this.props.click_action_yes()
         }

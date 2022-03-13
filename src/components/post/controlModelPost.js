@@ -61,16 +61,16 @@ class ControlModelPost extends Component {
                     let data_source={
                         id:data_server.id,
                         categorys_result:data_server.categorys_result,//
-                        template_selected:data_server.meta_data.template_selected,//meta
+                        template_selected:data_server.meta_data.template_selected==undefined?"":data_server.meta_data.template_selected,//meta
                         title_post:data_server.title_post,//
                         content_post:data_server.content_post,//
-                        descriptions:data_server.meta_data.descriptions,//meta
+                        descriptions:data_server.meta_data.descriptions==undefined?"":data_server.meta_data.descriptions,//meta
                         tags_result:data_server.tags_result,//
                         thumnail_post:data_server.thumnail_post,//
-                        schema_seo_list:JSON.parse(data_server.meta_data.schema_seo_list),//meta array=> by JSON.Stringtify
-                        code_header:data_server.meta_data.code_header,//meta
-                        code_body:data_server.meta_data.code_body,//meta
-                        code_footer:data_server.meta_data.code_footer,//meta
+                        schema_seo_list:data_server.meta_data.schema_seo_list==undefined?[]:JSON.parse(data_server.meta_data.schema_seo_list),//meta array=> by JSON.Stringtify
+                        code_header:data_server.meta_data.code_header==undefined?"":data_server.meta_data.code_header,//meta
+                        code_body:data_server.meta_data.code_body==undefined?"":data_server.meta_data.code_body,//meta
+                        code_footer:data_server.meta_data.code_footer==undefined?"":data_server.meta_data.code_footer,//meta
                         status:data_server.status//
                     };
                     this.setState({
@@ -283,6 +283,8 @@ click_action_no=()=>{
     click_action_yes=async()=>{
         // [todo] [todo=> sau này có chỉnh sửa code gì thêm biến ở đây]
         let {data_source} =this.state;
+        this.props.close_model_edit();
+
         let a=await action_create_or_edit_post({
             idN:data_source.id,
             titleS:data_source.title_post,
@@ -301,7 +303,6 @@ click_action_no=()=>{
                 template_selected:data_source.template_selected
             },
         })
-        this.props.close_model_edit();
         if(a.status==true){
             if(data_source.id==-1){
                 this.props.add_data_new_post({

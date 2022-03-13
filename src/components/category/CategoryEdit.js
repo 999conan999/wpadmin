@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Button,Segment,Input,Select,Table,Label,Menu,Modal,Header,Dropdown} from 'semantic-ui-react';
 import ControlModelCategory from './ControlModelCategory';
-import * as lang from '../lib/constants/language'
+import * as lang from '../lib/constants/language';
+import { toast } from 'react-toastify';
+import {
+    get_all_category,
+    action_remove_category_by_id
+}from '../lib/constants/axios'
 
 class CategoryEdit extends Component {
     constructor (props) {
@@ -15,64 +20,29 @@ class CategoryEdit extends Component {
                 title:'ERROR'
             },
             category_list:[
-                {
-                    id:1,
-                    name:'Category 1',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:0
-                },
-                {
-                    id:2,
-                    name:'Category 2',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:4
-                },
-                {
-                    id:3,
-                    name:'Category 3',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:2
-                },
-                {
-                    id:4,
-                    name:'Category 4',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:0
-                },
-                {
-                    id:5,
-                    name:'Category 5',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:1
-                },
-                {
-                    id:6,
-                    name:'Category 6',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:1
-                },
-                {
-                    id:7,
-                    name:'Category 7',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:3
-                },
-                {
-                    id:8,
-                    name:'Category 8',
-                    url:'http://localhost:3000/categorys',
-                    parent_id:7
-                },
+                // {
+                //     id:1,
+                //     name:'Category 1',
+                //     url:'http://localhost:3000/categorys',
+                //     parent_id:0
+                // },
             ],
 
         }
     }
     //********************************API */
-    componentDidMount(){
+   async componentDidMount(){
         //[todo] get all category
         // 
+        this.fs_support_get_all_category();
+        
     }
-
+    fs_support_get_all_category=async()=>{
+        let category_list=await get_all_category();
+        this.setState({
+            category_list:category_list
+        })
+    }
     //******************************** */
     // modal delete
     setOpenModalDelete=(st)=>{
@@ -111,13 +81,25 @@ class CategoryEdit extends Component {
         })
     }
     // yes delete post
-    action_yes_delete_category=()=>{
-        let {seleted_delete}=this.state;
-        console.log("🚀 ~ file: postEdit.js ~ line 93 ~ PostEdit ~ seleted_delete", seleted_delete)
-        //[todo]
+    action_yes_delete_category=async()=>{
         this.setState({
             openModalDelete:false
         })
+        let {seleted_delete}=this.state;
+        let a=await action_remove_category_by_id(seleted_delete.id);
+        
+        if(a.status){// delete thanh cong
+            if(a.rs){
+                this.fs_support_get_all_category();
+                toast.success(lang.SUCCESS_DELETE,{theme: "colored"})
+            }else{
+                toast.info(lang.CAN_NOT_DELETE,{theme: "colored"})
+            }
+        }else{// delete fail
+            toast.error(lang.ERRO_DELETE,{theme: "colored"})
+        }
+        //[todo]
+
     }
     //
     show_category_list=(data)=>{
@@ -135,7 +117,9 @@ class CategoryEdit extends Component {
         });
         return result;
     }
-
+    add_edit_success=()=>{
+        this.fs_support_get_all_category();
+    }
     //************************ */
     render() {
         let {openModalDelete,id_category,open,seleted_delete} =this.state;
@@ -183,6 +167,7 @@ class CategoryEdit extends Component {
                     open={open}
                     id_category={id_category}
                     close_model_edit={this.close_model_edit}
+                    add_edit_success={this.add_edit_success}
                 />
             </React.Fragment>
         )

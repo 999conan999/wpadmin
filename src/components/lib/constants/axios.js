@@ -1,5 +1,6 @@
 const axios = require('axios');
 
+const { toast } =require ('react-toastify');
 //chức năng: lấy dữ liệu các bài post theo tieu de hoac lay TAT CA cac bai post.
 // đầu vào : url_get_post_list(*bắt buộc) + page(*bắt buộc) + data_search ( biến này ='*' => get all posts; còn có giá trị => search title)
 // return_err : return_err => ARRAY ~~ OBJECT ; cai nay la sau khi gap loi se tra be mang rong hoac obj rong
@@ -24,6 +25,7 @@ async function fs_axios_get(url,return_err){ // return_err => ARRAY ~~ OBJECT
         return response.data
     })
     .catch(function (error) {
+        toast.error('ERROR!',{theme: "colored"})
         console.log(error)
         // handle error
         if(return_err=='ARRAY') return [];
@@ -153,9 +155,14 @@ export async function action_remove_category_by_id(id){
     )
     .then(function (response) {
         if(response.data.status=="ok"){
-            return true
+            return {
+                status:response.data,
+                rs:response.data.rs
+            }
         }else{
-            return false
+            return  {
+                status:false,
+            }
         }
     })
     .catch(function (error) {
@@ -245,11 +252,16 @@ export async function action_create_or_edit_page(data){
         data_send
     )
     .then(function (response) {
-        console.log("🚀 ~ file: axios.js ~ line 227 ~ response", response.data)
         if(response.data.status=="ok"){
-            return true
+            return {
+                status:true,
+                id:response.data.id,
+                url:response.data.url,
+            }
         }else{
-            return false
+            return {
+                status:false,
+            }
         }
     })
     .catch(function (error) {

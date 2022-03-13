@@ -3,7 +3,7 @@ import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accor
 import EditorWrap from './editorwrap';
 import * as lang from './constants/language';
 import FileMedia from './fileMedia';
- 
+import { ToastContainer, toast } from 'react-toastify';
 class ModalEditerCategory extends Component {
     constructor (props) {
         super(props)
@@ -120,7 +120,8 @@ return_image=(list_img,type_media)=>{
 
     render() {
         const { activeIndex } =  this.state;
-        const {data_source,id_category,template_list}=this.props;
+        const {data_source,id_category,template_list,categorys_list}=this.props;
+        const categorys_lists=[...[{key:0,value:0,text:'Không chọn'}],...categorys_list]
 
         return (<React.Fragment>
             <Modal
@@ -134,7 +135,7 @@ return_image=(list_img,type_media)=>{
                         <Segment raised className={data_source.categorys_result.length>0?'okok':''}>
                             <Header as='h4'>{lang.CATEGORY_POST_PARENT}: </Header>
                             <Select  
-                                options={data_source.categorys_list}
+                                options={categorys_lists}
                                 // defaultValue={''} 
                                 value={data_source.categorys_result}
                                 onChange={this.action_change_category}
@@ -163,21 +164,7 @@ return_image=(list_img,type_media)=>{
                             />
                         </Segment>
                         <Segment.Group horizontal>
-                            {/* <Segment raised className={data_source.tags_result.length>0?'hsj okok':'hsj'}>
-                                <Header as='h4'>{lang.TAGS_POST}:</Header>
-                                <Dropdown
-                                    options={data_source.tags_all}
-                                    placeholder='Add tags'
-                                    search
-                                    selection
-                                    fluid
-                                    multiple
-                                    allowAdditions
-                                    value={data_source.tags_result}
-                                    onAddItem={this.handleAddition}
-                                    onChange={this.handleChange}
-                                />
-                            </Segment> */}
+                
                             <Segment raised className={data_source.descriptions!=''?'okok':''}>
                                 <Header as='h4'>{lang.DESCRIPTION_POST}:</Header>
                                 <Form>
@@ -295,7 +282,7 @@ return_image=(list_img,type_media)=>{
     //
     click_action_yes=()=>{
         if(this.props.data_source.title_post.length<3){
-            alert(lang.NOTIFY_VALIDATE_TITLE)
+            toast.info(lang.NOTIFY_VALIDATE_TITLE,{theme: "colored"})
         }else{
             this.props.click_action_yes()
         }

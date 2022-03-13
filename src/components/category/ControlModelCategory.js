@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import ModalEditerCategory from '../lib/ModalEditerCategory';
-import {TEMPLATE_CATEGORY} from '../lib/constants/template'
+import {TEMPLATE_CATEGORY} from '../lib/constants/template';
+import {fs_convert_schema_cript} from '../lib/constants/fs';
+import * as lang from '../lib/constants/language';
+import { toast } from 'react-toastify';
+import {
+    get_cate_tag,
+    action_create_or_edit_category,
+    get_category_infor_by_id
+}from '../lib/constants/axios'
 class ControlModelCategory extends Component {
     constructor (props) {
         super(props)
         this.state = {
             template_list:TEMPLATE_CATEGORY,
             data_source:{
-                categorys_list:[],//
+                id:-1,
                 categorys_result:0,//
-                template_selected:-1,//meta
+                template_selected:0,//meta
                 title_post:'',//
                 content_post:'',//
                 descriptions:'',//meta
@@ -20,60 +28,70 @@ class ControlModelCategory extends Component {
                 code_footer:'',//meta
 
             },
-            id_category:-1
+            id_category:-1,
+            categorys_list:[]
         }
     }
     //
-    componentWillReceiveProps(nextProps){
+    async componentWillReceiveProps(nextProps){
         if(nextProps.id_category!==this.props.id_category){
             if(nextProps.id_category==-2){
-                // create post
+                // create category 
+                let data_source={
+                    id:-1,
+                    categorys_result:0,//
+                    template_selected:0,//meta
+                    title_post:'',//
+                    content_post:'',//
+                    descriptions:'',//meta
+                    thumnail_post:'',//
+                    schema_seo_list:[],//meta array=> by JSON.Stringtify
+                    code_header:'',//meta
+                    code_body:'',//meta
+                    code_footer:'',//meta
+    
+                }
+                this.setState({data_source:data_source});
             }else{
-                // edit post
+                // edit post [todo=> thêm code ở đây, để convert ra data input]
+                let data_server=await get_category_infor_by_id(nextProps.id_category);
+                let data=await get_cate_tag();
+                if(data_server!='null'&&data!='null'){
+                    let data_source={
+                        id:data_server.id,
+                        categorys_result:data_server.categorys_result,//
+                        template_selected:data_server.metaA.template_selected==undefined?'':data_server.metaA.template_selected,//meta
+                        title_post:data_server.title_post,//
+                        content_post:data_server.content_post,//
+                        descriptions:data_server.metaA.descriptions==undefined?'':data_server.metaA.descriptions,//meta
+                        thumnail_post:data_server.thumnail_post,//
+                        schema_seo_list:data_server.metaA.schema_seo_list==undefined?[]:JSON.parse(data_server.metaA.schema_seo_list),//meta array=> by JSON.Stringtify
+                        code_header:data_server.metaA.code_header==undefined?'':data_server.metaA.code_header,//meta
+                        code_body:data_server.metaA.code_body==undefined?'':data_server.metaA.code_body,//meta
+                        code_footer:data_server.metaA.code_footer==undefined?'':data_server.metaA.code_footer,//meta
+                    }
+                    this.setState({
+                        data_source:data_source,
+                        categorys_list: data.categorys_list
+                    })
+                }
             }
-            console.log(nextProps.id_category);
-            console.log('thay doi here!')
+            // console.log(nextProps.id_category);
             //Perform some operation
             // this.setState({someState: someValue });
             // ....
             // [todo]
         }
     }
-//    componentDidMount(){
-//     this.setState({
-//                data_source:{
-//                     categorys_list:[
-//                         {
-//                             key:12,
-//                             text:'Giường sắt',
-//                             value:12
-//                         },
-//                         {
-//                             key:13,
-//                             text:'Giường gỗ',
-//                             value:13
-//                         },
-//                         {
-//                             id:14,
-//                             text:'Giường inox',
-//                             value:14
-//                         },
-//                     ],
-//                     categorys_result:12,
-//                     template_selected:1,
-//                     title_post:'đây là title bài post',
-//                     content_post:'<p>đây là content post</p>',
-//                     descriptions:'đây là descriptions',
-//                     thumnail_post:'http://anbinhnew.com/thumnail.jpg',
-//                     schema_seo_list:['schema 1','schema 2'],
-//                     // schema_seo_result:'schema 1*+*schema 2',
-//                     code_header:'code header',
-//                     code_body:'code body',
-//                     code_footer:'code footer'
+    async componentDidMount(){
+        let data=await get_cate_tag();
+        if(data!=null){
+            this.setState({
+             categorys_list: data.categorys_list
+            })
+        }
+    }
 
-//                 }
-//             });
-//         }
     //**************** Category */
     action_change_category=(categorys_result)=>{
         let {data_source}=this.state;
@@ -190,13 +208,14 @@ class ControlModelCategory extends Component {
     //
     //
     render() {
-        let {data_source,template_list} =this.state;
-        console.log("🚀 ~ file: ControlModelCategory.js ~ line 228 ~ ControlModelCategory ~ render ~ data_source", data_source)
+        let {data_source,template_list,categorys_list} =this.state;
+        // console.log("🚀 ~ file: ControlModelCategory.js ~ line 228 ~ ControlModelCategory ~ render ~ data_source", data_source)
         return (
             <React.Fragment>
                 <ModalEditerCategory 
                     open={this.props.open}
                     data_source={data_source}
+                    categorys_list={categorys_list}
                     template_list={template_list}
                     action_change_category={this.action_change_category}
                     action_change_template={this.action_change_template}
@@ -224,8 +243,38 @@ class ControlModelCategory extends Component {
         this.props.close_model_edit()
     }
 //
-    click_action_yes=()=>{
-        alert('yest ' + this.props.id_category) // [todo]
+    click_action_yes=async()=>{
+        // alert('yest ' + this.props.id_category) // [todo=> sau này có chỉnh sửa code gì thêm biến ở đây]
+        let {data_source}=this.state;
+        this.props.close_model_edit();
+        let a=await action_create_or_edit_category({
+            idN:data_source.id,
+            parentIdN:data_source.categorys_result,
+            nameS:data_source.title_post,
+            contentS:data_source.content_post,
+            thumnailS:data_source.thumnail_post,
+            metaA:{
+                code_body:data_source.code_body,
+                code_footer:data_source.code_footer,
+                code_header:data_source.code_header,
+                descriptions:data_source.descriptions,
+                template_selected:data_source.template_selected,
+                schema_seo_list:JSON.stringify(data_source.schema_seo_list),
+                schema_seo_result:fs_convert_schema_cript(data_source.schema_seo_list),
+            }
+        });
+        if(a){// thanh cong
+            this.props.add_edit_success()
+            data_source.id==-1?toast.success(lang.SUCCPOST_CREATE,{theme: "colored"}):toast.success(lang.SUCC_POST_EDIT,{theme: "colored"});
+            let data=await get_cate_tag();
+            if(data!=null){
+                this.setState({
+                 categorys_list: data.categorys_list
+                })
+            }
+        }else{// khong thanh cong
+            toast.error(lang.ERRO_POST_CREATE,{theme: "colored"})
+        }
     }
 }
 export default ControlModelCategory

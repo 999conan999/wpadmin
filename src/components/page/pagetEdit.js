@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { Button,Segment,Input,Select,Table,Label,Menu,Modal,Header,Dropdown} from 'semantic-ui-react';
 import ControlModelPage from './controlModelPage';
-import * as lang from '../lib/constants/language'
-
+import * as lang from '../lib/constants/language';
+import { toast } from 'react-toastify';
+import {
+    get_all_page,
+    action_remove_page_by_id
+} from '../lib/constants/axios'
+const quantity=30;
 class PostEdit extends Component {
     constructor (props) {
         super(props)
         this.state = {
             id_page:-1,
+            page:0,
+            show_more:false,
             open:false,
             openModalDelete:false,
             seleted_delete:{
@@ -15,42 +22,42 @@ class PostEdit extends Component {
                 title:'ERROR'
             },
             data_list_page:[
-                {
-                    id:1,
-                    title:'title 1',
-                    status:'publish',
-                    url:'http://localhost:3000/'
-                },
-                {
-                    id:2,
-                    title:'title 2',
-                    status:'publish',
-                    url:'http://localhost:3000/'
-                },
-                {
-                    id:3,
-                    title:'title 3',
-                    status:'publish',
-                    url:'http://localhost:3000/'
-                },
-                {
-                    id:4,
-                    title:'title 4',
-                    status:'private',
-                    url:'http://localhost:3000/'
-                },
+                // {
+                //     id:1,
+                //     title:'title 1',
+                //     status:'publish',
+                //     url:'http://localhost:3000/',
+                //     is_home:true,
+                // },
             ]
 
         }
     }
     //********************************API */
-    componentDidMount(){
+   async componentDidMount(){
         //[todo] get all post first here and all category
-        // 
+        let data_server=await get_all_page(0);
+        let show_more=true;
+        if(data_server.length<quantity) show_more=false;
+        this.setState({
+            data_list_page:data_server,
+            page:1,
+            show_more:show_more
+        })
+        
     }
     // get more post
-    action_click_more=()=>{
-        alert('Click xem them')
+    action_click_more=async()=>{
+        let {page,data_list_page}=this.state;
+        let data_server=await get_all_page(page);
+        let show_more=true;
+        if(data_server.length<quantity) show_more=false;
+        data_list_page=[...data_list_page,...data_server]
+        this.setState({
+            data_list_page:data_list_page,
+            page:page+1,
+            show_more:show_more
+        })
     }
 
 
@@ -91,12 +98,29 @@ class PostEdit extends Component {
         })
     }
     // yes delete post
-    action_yes_delete_page=()=>{
-        let {seleted_delete}=this.state;
-        console.log("🚀 ~ file: postEdit.js ~ line 93 ~ PostEdit ~ seleted_delete", seleted_delete)
+    action_yes_delete_page=async()=>{
+        let {seleted_delete,data_list_page}=this.state;
+        this.setState({
+            openModalDelete:false,
+        })
+        let status_delete= await action_remove_page_by_id(seleted_delete.id);
+        let index=null;
+        if(status_delete){// ok xoa thanh cong
+            data_list_page.forEach((e,i) => {
+                if(e.id==seleted_delete.id){
+                    index=i;
+                }
+            });
+            if(index!=null){
+                data_list_page.splice(index,1);
+            }
+            toast.success(lang.SUCCESS_DELETE,{})
+        }else{
+            toast.error(lang.ERRO_DELETE,{style:{theme: "colored"}})
+        }
         //[todo]
         this.setState({
-            openModalDelete:false
+            data_list_page:data_list_page
         })
     }
     // show post
@@ -107,11 +131,16 @@ class PostEdit extends Component {
             //
             result.push(
                 <Table.Row key={i} className='danhvt'>
-                    <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
+                    <Table.Cell>
+                        <b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b>
+                        {e.is_home&&<i className="fa-solid fa-house hjh"></i>}
+                    </Table.Cell>
                     <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
                     <Table.Cell>
-                        <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
-                        <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
+                       {!e.is_home&&<div>
+                            <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
+                            <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
+                        </div>}
                     </Table.Cell>
                 </Table.Row>
             )
@@ -121,7 +150,7 @@ class PostEdit extends Component {
 
     //************************ */
     render() {
-        let {openModalDelete,id_page,open,data_list_page,seleted_delete} =this.state;
+        let {openModalDelete,id_page,open,data_list_page,seleted_delete,show_more} =this.state;
         return (
             <React.Fragment>
                 <Segment.Group horizontal className='assd'>
@@ -150,9 +179,9 @@ class PostEdit extends Component {
                     <Table.Footer>
                     <Table.Row>
                         <Table.HeaderCell colSpan='3'>
-                            <span className='smo'
+                            {show_more&&<span className='smo'
                                 onClick={this.action_click_more}
-                            >{lang.SEE_MORE}</span>
+                            >{lang.SEE_MORE}</span>}
                         </Table.HeaderCell>
                     </Table.Row>
                     </Table.Footer>
@@ -179,11 +208,30 @@ class PostEdit extends Component {
                     open={open}
                     id_page={id_page}
                     close_model_edit={this.close_model_edit}
+                    add_data_new_page={this.add_data_new_page}
+                    add_data_update_page={this.add_data_update_page}
                 />
             </React.Fragment>
         )
     }
     //
-
+    add_data_new_page=(data)=>{
+        let {data_list_page}=this.state;
+        data_list_page=[...[data],...data_list_page];
+        this.setState({
+            data_list_page:data_list_page
+        })
+    }
+    add_data_update_page=(data)=>{
+        let {data_list_page}=this.state;
+        let index=null;
+        data_list_page.forEach((e,i) => {
+            if(e.id==data.id) index=i;
+        });
+        if(index!=null) data_list_page[index]=data;
+        this.setState({
+            data_list_page:data_list_page
+        })
+    }
 }
 export default PostEdit;

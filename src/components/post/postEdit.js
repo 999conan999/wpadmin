@@ -54,6 +54,7 @@ class PostEdit extends Component {
         }else{
             show_see_more=true;
         }
+        
         this.setState({
             listCategory:listCategory,
             data_list_post:data_list_post,
