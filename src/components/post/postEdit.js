@@ -257,30 +257,32 @@ class PostEdit extends Component {
     // show post
     show_post_list=(data)=>{
         let result=[];
-        data.forEach((e,i) => {
-            //
-            let rs=[]
-            e.category.forEach((element,j) => {
-                rs.push( <span className='catezz' key={j}>{element}</span>)
-            });
-            //
-            result.push(
-                <Table.Row key={i} className='danhvt'>
-                    <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
-                    <Table.Cell><img src={e.thumnail_url} height="50px"/></Table.Cell>
-                    <Table.Cell><span >{e.author_name}</span></Table.Cell>
-                    <Table.Cell><span className={e.status=='private'?'priva':e.status=='publish'?'publ':'draf'}>{e.status}</span></Table.Cell>
-                    <Table.Cell>
+        if(data.length>0){
+            data.forEach((e,i) => {
+                //
+                let rs=[]
+                e.category.forEach((element,j) => {
+                    rs.push( <span className='catezz' key={j}>{element}</span>)
+                });
+                //
+                result.push(
+                    <Table.Row key={i} className='danhvt'>
+                        <Table.Cell><b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b></Table.Cell>
+                        <Table.Cell><img src={e.thumnail_url} height="50px"/></Table.Cell>
+                        <Table.Cell><span >{e.author_name}</span></Table.Cell>
+                        <Table.Cell><span className={e.status=='private'?'priva':e.status=='publish'?'publ':'draf'}>{e.status}</span></Table.Cell>
+                        <Table.Cell>
 
-                        {rs}
-                    </Table.Cell>
-                    <Table.Cell>
-                        <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
-                        <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
-                    </Table.Cell>
-                </Table.Row>
-            )
-        });
+                            {rs}
+                        </Table.Cell>
+                        <Table.Cell>
+                            <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
+                            <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
+                        </Table.Cell>
+                    </Table.Row>
+                )
+            });
+        }
         return result;
     }
     // add post new affter post server

@@ -1,7 +1,13 @@
 import React, { Component  } from 'react';
 import { Button,Segment,Input,Modal,Header,Image} from 'semantic-ui-react';
 import * as lang from './constants/language';
-
+import { toast } from 'react-toastify';
+import {
+  upload_core,
+  get_imgs,
+  action_remove_img_by_id
+} from '../lib/constants/axios';
+const quantity=30;
 class FileMedia extends Component {
     constructor (props) {
         super(props)
@@ -10,7 +16,8 @@ class FileMedia extends Component {
             imgs_list:[],
             selected_list:[],
             show_button_more:true,
-            test:5
+            show_more:false,
+            page:0
         }
     }
 
@@ -21,47 +28,18 @@ class FileMedia extends Component {
         })
     }
     //
-    componentDidMount(){
-      // [todo] get data first
-      this.setState({
-        imgs_list:[
-          {
-            id:1,
-            url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-nhua-cho-be-4-300x300.jpg',
-            title:'title 1'
-          },
-          {
-            id:2,
-            url:'https://anbinhnew.com/wp-content/uploads/2021/01/Giuong-ngu-sat-kieu-moi-gia-re-300x300.jpg',
-            title:'title 2'
-          },
-          {
-            id:3,
-            url:'https://anbinhnew.com/wp-content/uploads/2021/01/ban-hoc-sinh-go-tu-nhien-gia-re-1-300x300.jpg',
-            title:'title 3'
-          },
-          {
-            id:4,
-            url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-            title:'title 4'
-          },
-          {
-            id:5,
-            url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-            title:'title 5'
-          },
-          {
-            id:6,
-            url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-            title:'title 6'
-          },
-          {
-            id:7,
-            url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-            title:'title 7'
-          }
-        ]
-      })
+   async componentDidMount(){
+
+      let a= await get_imgs(0);
+      let show_more=true;
+      if(a.length>0){
+        if(a.length<quantity) show_more=false;
+        this.setState({
+          imgs_list:a,
+          show_more:show_more,
+          page:1
+        })
+      }
     }
     //
     show_imgs=(imgs_list,multi_select)=>{
@@ -78,9 +56,10 @@ class FileMedia extends Component {
           <img style={{width:"80px"}} src={e.url} 
             onClick={()=>this.action_click_img(e,multi_select)}
           />
-          <i className={`fa-solid fa-trash-can delez ${is_selecte?'show':''}`}
+          <div className={` delez ${is_selecte?'show':''}`}>
+          <i className={`fa-solid fa-circle-xmark`}
             onClick={()=>this.action_delete_img(e)}
-          ></i>
+          ></i></div>
         </div>)
       });
       return result;
@@ -122,87 +101,76 @@ class FileMedia extends Component {
       })
     }
     // delete img [todo]
-    action_delete_img=(e)=>{
+    action_delete_img=async(e)=>{
       let {selected_list,imgs_list} =this.state;
       if (window.confirm(`${lang.DELETE_IMAGE}`) == true) {
+        let a=await action_remove_img_by_id(e.id);
           // test xoa hinh anh local list seletect and list all img
-          let is_selected=false; let index=null;
-          selected_list.forEach((element,x) => {
-            if(e.id==element.id){
-              is_selected=true;
-              index=x;
+          if(a.status){
+            toast.success(lang.SUCCESS_DELETE,{theme: "colored"})
+            let is_selected=false; let index=null;
+            selected_list.forEach((element,x) => {
+              if(e.id==element.id){
+                is_selected=true;
+                index=x;
+              }
+            });
+            if(is_selected){// da co => xoa
+              selected_list.splice(index,1);
             }
-          });
-          if(is_selected){// da co => xoa
-            selected_list.splice(index,1);
-          }
-          // list all
-          let is_select=false; let indexAll=null;
-          imgs_list.forEach((element,x) => {
-            if(e.id==element.id){
-              is_select=true;
-              indexAll=x;
+            // list all
+            let is_select=false; let indexAll=null;
+            imgs_list.forEach((element,x) => {
+              if(e.id==element.id){
+                is_select=true;
+                indexAll=x;
+              }
+            });
+            if(is_select){// da co => xoa
+              imgs_list.splice(indexAll,1);
             }
-          });
-          if(is_select){// da co => xoa
-            imgs_list.splice(indexAll,1);
+            //
+            this.setState({
+              selected_list:selected_list,
+              imgs_list:imgs_list
+            })
+          }else{
+            if(a.permisstion_type=="administrator"||a.permisstion_type=="editor"||a.permisstion_type=="author"){
+                toast.error(lang.ERRO_DELETE,{theme: "colored"});
+            }else{
+                toast.info(lang.NOT_PERMISSION_DELETE,{theme: "colored"})
+            }
           }
-          //
-          this.setState({
-            selected_list:selected_list,
-            imgs_list:imgs_list
-          })
+
       }
     }
     // click see more [todo]
-    action_click_more=()=>{
-      let {imgs_list,test}=this.state;
-      let data_demo_server=[
-        {
-          id:test*100-1,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 1'
-        },
-        {
-          id:test*100-2,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 2'
-        },
-        {
-          id:test*100-3,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 3'
-        },
-        {
-          id:test*100-4,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 4'
-        },
-        {
-          id:test*100-5,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 5'
-        },
-        {
-          id:test*100-6,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 6'
-        },
-        {
-          id:test*100-7,
-          url:'https://react.semantic-ui.com/images/wireframe/image-square.png',
-          title:'title 7'
+    action_click_more=async()=>{
+      let {imgs_list,page}=this.state;
+      let a= await get_imgs(page);
+      if(a!=null){
+        let show_more=true;
+        if(a.length<quantity) show_more=false;
+        if(a.length>0){
+          imgs_list=[...imgs_list,...a];
+          this.setState({
+            page:page+1,
+            show_more:show_more,
+            imgs_list:imgs_list
+          })
+        }else{
+          this.setState({
+            page:page+1,
+            show_more:false,
+          })
         }
-      ]
-      if(test<=0) data_demo_server=[];
-      if(data_demo_server.length>0){
-        imgs_list=[...imgs_list,...data_demo_server];
+      }else{
         this.setState({
-          imgs_list:imgs_list,
-          show_button_more:test-1>0?true:false,
-          test:test-1,
+          page:page+1,
+          show_more:false,
         })
       }
+
     }
     // click ok media
     click_ok_media=()=>{
@@ -210,9 +178,25 @@ class FileMedia extends Component {
       this.props.return_image(selected_list,this.props.type_media);
       this.setOpen(false)
     }
+    //
+    handleChangeFile=async(e)=>{
+      let listFile= e.target.files;
+      //
+      if(listFile.length>0){
+        let a= await upload_core(listFile);
+        let {imgs_list}=this.state;
+        imgs_list=[...a,...imgs_list];
+        this.setState({
+          imgs_list:imgs_list
+        })
+      }
+
+      
+      //
+    }
 
     render() {
-        const { imgs_list,show_button_more} =  this.state;
+        const { imgs_list,show_button_more,show_more} =  this.state;
         const multi_select= this.props.multi_select;
         return (
         <Modal
@@ -227,18 +211,22 @@ class FileMedia extends Component {
                 Upload&nbsp;
                 <i className="fa-solid fa-folder-open"></i>
               </Button>
-              <input type="file" id="myFile" name="filename" className='btn-upl' multiple/>
+              <input type="file" id="myFile" name="filename" className='btn-upl' multiple
+                 onChange={this.handleChangeFile.bind(this)} 
+              />
             </div>
             </Modal.Header>
             <Modal.Content >
               {this.show_imgs(imgs_list,multi_select)}
-              <div className='wrap-more'>
+
+              {show_more&&<div className='wrap-more'>
                 {show_button_more&&<a 
                   className='see_more'
                   primary 
                   onClick={this.action_click_more}
                 >{lang.SEE_MORE}</a>}
-              </div>
+              </div>}
+              
             </Modal.Content>
             <Modal.Actions>
               <Button onClick={() => this.setOpen(false)}>Cancel</Button>

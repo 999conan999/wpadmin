@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link} from "react-router-dom";
 import FileMedia from '../lib/fileMedia';
 import Sortable from '../lib/sortable';
+import { Button} from 'semantic-ui-react';
 import {
     test_get,
     test_post,
@@ -22,7 +23,7 @@ class Home extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            data_test:'xx'            
+            open:true            
         }
     }
     // return img
@@ -89,9 +90,24 @@ class Home extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.state.data_test}
+                <Button basic color='blue' size='small' className='btn-mgb'
+                    onClick={()=>this.setState({open:true})}
+                ><i className="fas fa-photo-video vv"></i>Add Media</Button>
+                <FileMedia
+                    multi_select={true}
+                    open={this.state.open}
+                    type_media={'this.state.type_media'}
+                    return_image={this.return_image}
+                    set_open_media={(open)=>this.setState({open:open})}
+                />
             </React.Fragment>
         )
     }
+    //
+    return_image=(data)=>{
+         console.log("🚀 ~ file: pagetEdit.js ~ line 103 ~ Home ~ data", data)
+    }
+    //
+
 }
 export default Home;

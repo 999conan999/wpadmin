@@ -121,7 +121,10 @@ return_image=(list_img,type_media)=>{
     render() {
         const { activeIndex } =  this.state;
         const {data_source,id_category,template_list,categorys_list}=this.props;
-        const categorys_lists=[...[{key:0,value:0,text:'Không chọn'}],...categorys_list]
+        let categorys_lists=[{key:0,value:0,text:'Không chọn'}];
+        if(categorys_list!=undefined){
+            categorys_lists=[...[{key:0,value:0,text:'Không chọn'}],...categorys_list]
+        }
 
         return (<React.Fragment>
             <Modal

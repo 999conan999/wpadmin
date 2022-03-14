@@ -25,7 +25,7 @@ class Index extends Component {
         }
     }
     componentDidMount(){
-        let a=[1,2,3,4,5];
+        let a=[1,2,3,4,5,6,7];
         let random = Math.floor(Math.random() * a.length);
         if(random==1){
             toast(({ closeToast }) => alert_toast(),{

@@ -114,9 +114,9 @@ class PostEdit extends Component {
             if(index!=null){
                 data_list_page.splice(index,1);
             }
-            toast.success(lang.SUCCESS_DELETE,{})
+            toast.success(lang.SUCCESS_DELETE,{theme: "colored"})
         }else{
-            toast.error(lang.ERRO_DELETE,{style:{theme: "colored"}})
+            toast.error(lang.ERRO_DELETE,{theme: "colored"})
         }
         //[todo]
         this.setState({
@@ -126,25 +126,26 @@ class PostEdit extends Component {
     // show post
     show_page_list=(data)=>{
         let result=[];
-        data.forEach((e,i) => {
-
-            //
-            result.push(
-                <Table.Row key={i} className='danhvt'>
-                    <Table.Cell>
-                        <b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b>
-                        {e.is_home&&<i className="fa-solid fa-house hjh"></i>}
-                    </Table.Cell>
-                    <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
-                    <Table.Cell>
-                       {!e.is_home&&<div>
-                            <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
-                            <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
-                        </div>}
-                    </Table.Cell>
-                </Table.Row>
-            )
-        });
+        if(data.length>0){
+            data.forEach((e,i) => {
+                //
+                result.push(
+                    <Table.Row key={i} className='danhvt'>
+                        <Table.Cell>
+                            <b><a href={e.url}  target="_blank">{e.title} <i className="fa-solid fa-arrow-up-right-from-square" style={{'fontSize':'10px'}}></i></a></b>
+                            {e.is_home&&<i className="fa-solid fa-house hjh"></i>}
+                        </Table.Cell>
+                        <Table.Cell><span className={e.status=='private'?'priva':'publ'}>{e.status}</span></Table.Cell>
+                        <Table.Cell>
+                        {!e.is_home&&<div>
+                                <Label className='edit-css' onClick={()=>this.action_click_edit(e.id)}><i className="fas fa-edit"></i> {lang.EDIT}</Label>
+                                <Label className='delete-css' onClick={()=>this.clickDeletePost(e.id,e.title)}><i className="fas fa-trash-alt"></i> {lang.DELETE}</Label>
+                            </div>}
+                        </Table.Cell>
+                    </Table.Row>
+                )
+            });
+        }
         return result;
     }
 

@@ -310,4 +310,55 @@ export async function get_cate_tag(){
     let url=url_cate_tag;
     return fs_axios_get(url,'OBJECT');
 }
+// upload file 
+const url_upload='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/mede/upload_core.php';
+export async function upload_core(data){
+    console.log("🚀 ~ file: axios.js ~ line 316 ~ upload_core ~ data",typeof data)
+    let formData = new FormData();
+    if(data.length>0){
+        for(let i=0;i<data.length;i++){
+            formData.append(i,data[i]);
+        }
+    }
+    //
+    let response= axios.post(url_upload, 
+        formData
+    )
+    .then(function (response) {
+        if(response.data.length>0){
+            return response.data
+        }else{
+            return []
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return []
+    })
+    return response;
+}
 //
+const url_get_img='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/mede/teggmi.php?page=';
+export async function get_imgs(page){
+    let url=url_get_img+page;
+    return await fs_axios_get(url,'ARRAY');
+}
+//
+const url_remove_img_by_id='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/mede/eteled.php';
+export async function action_remove_img_by_id(id){
+    let data_send=new FormData();
+    data_send.append('idN',id);
+    let response= axios.post(url_remove_img_by_id, 
+        data_send
+    )
+    .then(function (response) {
+        return response.data;
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return {
+            status:false
+        }
+    })
+    return response;
+}

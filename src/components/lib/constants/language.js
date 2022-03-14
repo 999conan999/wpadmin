@@ -102,3 +102,4 @@ export const SUCC_POST_EDIT ='Cập nhật thành công!';
 export const SUCCPOST_CREATE ='Tạo mới thành công!';
 export const ERRO_POST_EDIT ='Lỗi! không cập nhật được bài viết mới.';
 export const CAN_NOT_DELETE ='Không xóa được vì đây là danh mục MẶC ĐỊNH.';
+export const NOT_PERMISSION_DELETE ='Xin lỗi! bạn không có quyền xóa.';
