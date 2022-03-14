@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Segment,Header,Button,Message,Form,TextArea,Input,Dropdown } from 'semantic-ui-react';
 import Sortable from '../lib/sortable';
 import FileMedia from '../lib/fileMedia';
-import * as lang from '../lib/constants/language'
+import * as lang from '../lib/constants/language';
+import {
+    get_all_category,
+    get_all_page_All
+} from '../lib/constants/axios'
 class SetupPage extends Component {
     constructor (props) {
         super(props)
@@ -22,65 +26,29 @@ class SetupPage extends Component {
             data:{
                 icon_url:'',
                 logo_url:'',
-                category_list:[
-                    // {
-                    //     title:'giường sắt 1',
-                    //     key:'giường sắt 1',
-                    //     text:'giường sắt 1',
-                    //     value:'giường sắt 1',
-                    //     url:'https://anbinhnew.com'
-                    // },
-                    // {
-                    //     title:'giường gỗ 1',
-                    //     key:'giường gỗ 1',
-                    //     text:'giường gỗ 1',
-                    //     value:'giường gỗ 1',
-                    //     url:'https://anbinhnew.com'
-                    // },
-                    // {
-                    //     title:'giường inox 1',
-                    //     key:'giường inox 1',
-                    //     text:'giường inox 1',
-                    //     value:'giường inox 1',
-                    //     url:'https://anbinhnew.com'
-                    // },
-                ],
-                page_list:[
-                    // {
-                    //     title:'Liên hệ',
-                    //     key:'Liên hệ',
-                    //     text:'Liên hệ',
-                    //     value:'Liên hệ',
-                    //     url:'https://anbinhnew.com'
-                    // },
-                    // {
-                    //     title:'Tư vấn',
-                    //     key:'Tư vấn',
-                    //     text:'Tư vấn',
-                    //     value:'Tư vấn',
-                    //     url:'https://anbinhnew.com'
-                    // },
-                    // {
-                    //     title:'Login',
-                    //     key:'Login',
-                    //     text:'Login',
-                    //     value:'Login',
-                    //     url:'https://anbinhnew.com'
-                    // },
-                ],
-                treeData:[],// data value on server
                 code_contacts:{
                     code_source:'',
                     code_value:[],
-                    // code_source:'[value1] code value 2 [value2]',
-                    // code_value:['giá trị 1','giá trị 2'],
                 },
                 code_header:'',
                 code_body:'',
                 code_footer:'',
                 css_code:'',
-            }
-
+                // code_function:''
+            },
+            category_list:[],
+            page_list:[]
+        }
+    }
+    //
+    async componentDidMount(){
+        let cate_list=await get_all_category();
+        let page_list=await get_all_page_All();
+        if(cate_list.length>0){
+            this.setState({
+                category_list:cate_list,
+                page_list:page_list
+            })
         }
     }
     //
@@ -128,32 +96,32 @@ class SetupPage extends Component {
     }
     // change cateogry
     onChange_category=(e, { value })=>{
-        let {data}=this.state;
+        let {category_list}=this.state;
         let js=null;
-        data.category_list.forEach((e,i) => {
+        category_list.forEach((e,i) => {
             if(e.value==value){
                 js=i;
             }
         });
         if(js!=null){
             this.setState({
-                value_category:data.category_list[js]
+                value_category:category_list[js]
             })
         }
 
     }
     // change page
     onChange_page=(e, { value })=>{
-        let {data}=this.state;
+        let {page_list}=this.state;
         let js=null;
-        data.page_list.forEach((e,i) => {
+        page_list.forEach((e,i) => {
             if(e.value==value){
                 js=i;
             }
         });
         if(js!=null){
             this.setState({
-                value_page:data.page_list[js]
+                value_page:page_list[js]
             })
         }
 
@@ -281,7 +249,7 @@ class SetupPage extends Component {
     }
 
     render() {
-        let {data,value_category,value_page,value_custom_text}=this.state;
+        let {data,value_category,value_page,value_custom_text,category_list,page_list}=this.state;
         return (
             <React.Fragment>
                 <Message  color='brown'>
@@ -338,7 +306,7 @@ class SetupPage extends Component {
                                                 fluid
                                                 search
                                                 selection
-                                                options={data.category_list}
+                                                options={category_list}
                                                 value={value_category.value}
                                                 onChange={this.onChange_category}
                                             />
@@ -359,7 +327,7 @@ class SetupPage extends Component {
                                                 fluid
                                                 search
                                                 selection
-                                                options={data.page_list}
+                                                options={page_list}
                                                 value={value_page.value}
                                                 onChange={this.onChange_page}
                                             />
@@ -487,10 +455,11 @@ class SetupPage extends Component {
                                 />
                             </Form>
                         </Segment>
+ 
                     </Segment>
                     <div style={{float:"right"}}>
-                       <Button negative onClick={this.click_action_no}>{lang.NO}</Button>
-                       <Button positive onClick={this.click_action_yes} >{lang.UPDATE}</Button>
+                       {/* <Button negative onClick={this.click_action_no}>{lang.NO}</Button> */}
+                       <Button positive onClick={this.click_action_update} >{lang.UPDATE}</Button>
                     </div>
                 <FileMedia
                     open={this.state.open}
@@ -503,5 +472,35 @@ class SetupPage extends Component {
             </React.Fragment>
         )
     }
+    click_action_update=()=>{
+        let {treeData,data} =this.state;
+        // this.convert_menu_html(treeData);
+        // console.log(this.convert_contact_html(data.code_contacts));
+    }
+    // convert treeData => html menu [todo=>]
+    convert_menu_html=(treeData)=>{
+        let result='';
+        treeData.forEach((e,i) => {
+            result+='<li class="parent-menu" ><a href="">'+e.title+'</a>'
+            if(e.children!=undefined){
+                result+='<ul>';
+                for(let j=0;j<e.children.length;j++){
+                    result+='<li class="parent-menu" ><a href="">'+e.children[j].title+'</a></li>'
+                }
+                result+='</ul>';
+            }
+            result+='</li>'
+        });
+        return result;
+    }
+    //
+    convert_contact_html=(code_contacts)=>{
+        let contact_html=code_contacts.code_source;
+        code_contacts.code_value.forEach((e,i) => {
+            contact_html= contact_html.replace('[value='+i+']',e)
+        });
+        return contact_html;
+    }
+
 }
 export default SetupPage;

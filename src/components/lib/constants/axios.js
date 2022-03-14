@@ -276,6 +276,10 @@ export async function get_all_page(page){
     let url=url_get_page_list+'?page='+page;
     return await fs_axios_get(url,'OBJECT');
 }
+const url_get_page_list_all='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/egap/tegegapAll.php';
+export async function get_all_page_All(){
+    return await fs_axios_get(url_get_page_list_all,'ARRAY');
+}
 //
 const url_remove_page='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/egap/eteled.php';
 export async function action_remove_page_by_id(id){
@@ -313,7 +317,6 @@ export async function get_cate_tag(){
 // upload file 
 const url_upload='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/mede/upload_core.php';
 export async function upload_core(data){
-    console.log("🚀 ~ file: axios.js ~ line 316 ~ upload_core ~ data",typeof data)
     let formData = new FormData();
     if(data.length>0){
         for(let i=0;i<data.length;i++){

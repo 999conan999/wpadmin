@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PageEdit from './page/pagetEdit';
 import PostEdit from './post/postEdit';
 import Home from './home/pagetEdit';
+import Media from './media/controlMedia';
 import CategoryEdit from './category/CategoryEdit';
 import SetupPage from './setup_Page/SetupPage';
 import {  Menu, Segment } from 'semantic-ui-react'
@@ -69,6 +70,7 @@ class Index extends Component {
         let permission_active_page=this.set_permission(["administrator","editor"],permission_type);
         let permission_active_home=this.set_permission(["administrator","editor"],permission_type);
         let permission_active_setup=this.set_permission(["administrator","editor"],permission_type);
+        let permission_active_media=this.set_permission(["administrator","editor",'author','contributor'],permission_type);
         // let permission_active_post=this.set_permission(["administrator","editor",'author','contributor','subscriber']);
         return (
             <Router>
@@ -89,7 +91,12 @@ class Index extends Component {
                     to="/pages"
                     className={`link item ${activeItem=="pages"?"active":""}`}
                     onClick={()=>this.clickMenu("pages")}
-                ><i class="fa-solid fa-hand menu-icon-d"></i>Pages</Link>}
+                ><i class="fa-solid fa-hand menu-icon-d"></i>{lang.PAGES}</Link>}
+                {permission_active_media&&<Link 
+                    to="/media"
+                    className={`link item ${activeItem=="media"?"active":""}`}
+                    onClick={()=>this.clickMenu("media")}
+                ><i className="fas fa-photo-video  menu-icon-d"></i>{lang.MEDIA}</Link>}
                 {permission_active_home&&<Link 
                     to="/home"
                     className={`link item ${activeItem=="home"?"active":""}`}
@@ -120,6 +127,7 @@ class Index extends Component {
                 {permission_active_post&&<Route exact path="/posts" element={<PostEdit permission_type={permission_type}/>}/>}
                 {permission_active_setup&&<Route exact path="/setups" element={<SetupPage/>}/>}
                 {permission_active_page&&<Route exact path="/pages" element={<PageEdit/>}/>}
+                {permission_active_media&&<Route exact path="/media" element={<Media/>}/>}
                 {permission_active_home&&<Route exact path="/home" element={<Home/>}/>}
                 {permission_active_category&&<Route exact path="/categorys" element={<CategoryEdit/>}/>}
                 {(permission_active_category||permission_active_home||permission_active_page||permission_active_setup||permission_active_post)&&<Route exact path="/*" element={<PostEdit/>}/>}

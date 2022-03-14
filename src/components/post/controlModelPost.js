@@ -284,7 +284,7 @@ click_action_no=()=>{
         // [todo] [todo=> sau này có chỉnh sửa code gì thêm biến ở đây]
         let {data_source} =this.state;
         this.props.close_model_edit();
-
+// console.log(JSON.stringify(data_source.schema_seo_list));
         let a=await action_create_or_edit_post({
             idN:data_source.id,
             titleS:data_source.title_post,
