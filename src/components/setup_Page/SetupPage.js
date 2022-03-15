@@ -3,9 +3,12 @@ import { Segment,Header,Button,Message,Form,TextArea,Input,Dropdown } from 'sema
 import Sortable from '../lib/sortable';
 import FileMedia from '../lib/fileMedia';
 import * as lang from '../lib/constants/language';
+import { toast } from 'react-toastify';
 import {
     get_all_category,
-    get_all_page_All
+    get_all_page_All,
+    action_edit_setup,
+    get_setup
 } from '../lib/constants/axios'
 class SetupPage extends Component {
     constructor (props) {
@@ -24,6 +27,7 @@ class SetupPage extends Component {
                 url:''
             },
             data:{
+                
                 icon_url:'',
                 logo_url:'',
                 code_contacts:{
@@ -35,6 +39,14 @@ class SetupPage extends Component {
                 code_footer:'',
                 css_code:'',
                 // code_function:''
+                value_1:'' ,
+                value_2:'' ,
+                value_3:'' ,
+                value_4:'' ,
+                value_5:'' ,
+                value_6:'' ,
+                value_7:'' ,
+                value_8:'' ,
             },
             category_list:[],
             page_list:[]
@@ -44,12 +56,36 @@ class SetupPage extends Component {
     async componentDidMount(){
         let cate_list=await get_all_category();
         let page_list=await get_all_page_All();
-        if(cate_list.length>0){
-            this.setState({
-                category_list:cate_list,
-                page_list:page_list
-            })
+        let data_setup= await get_setup();
+        if(data_setup.id!=undefined){
+            let data={
+                idN:data_setup.id,
+                icon_url:data_setup.icon,
+                logo_url:data_setup.logo,
+                code_contacts:data_setup.contact_code=='null'?{code_source:'',code_value:[],}:JSON.parse(data_setup.contact_code),
+                code_header:data_setup.header_code,
+                code_body:data_setup.body_code,
+                code_footer:data_setup.footer_code,
+                css_code:data_setup.css_code,
+                // code_function:''
+                value_1:data_setup.value_1,
+                value_2:data_setup.value_2 ,
+                value_3:data_setup.value_3 ,
+                value_4:data_setup.value_4 ,
+                value_5:data_setup.value_5 ,
+                value_6:data_setup.value_6 ,
+                value_7:data_setup.value_7 ,
+                value_8:data_setup.value_8 ,
+            };
+            let treeData=data_setup.menu_json=='null'?[]:JSON.parse(data_setup.menu_json);
+                this.setState({
+                    category_list:cate_list,
+                    page_list:page_list,
+                    treeData:treeData,
+                    data:data
+                })
         }
+
     }
     //
     return_image=(arr_img)=>{
@@ -472,10 +508,37 @@ class SetupPage extends Component {
             </React.Fragment>
         )
     }
-    click_action_update=()=>{
+    click_action_update=async()=>{
         let {treeData,data} =this.state;
-        // this.convert_menu_html(treeData);
-        // console.log(this.convert_contact_html(data.code_contacts));
+        // console.log("🚀 ~ file: SetupPage.js ~ line 478 ~ SetupPage ~ data", data)
+        let data_convert={
+            idN:1,//[todo]
+            icon:data.icon_url,
+            logo:data.logo_url,
+            menu_json:JSON.stringify(treeData) ,
+            menu_html:this.convert_menu_html(treeData),
+            contact_code:JSON.stringify(data.code_contacts) ,
+            contact_html:this.convert_contact_html(data.code_contacts) ,
+            css_code:data.css_code,
+            header_code:data.code_header ,
+            body_code:data.code_body ,
+            footer_code:data.code_footer ,
+            value_1:data.value_1==undefined?'': data.value_1,
+            value_2:data.value_2==undefined?'': data.value_2 ,
+            value_3:data.value_3==undefined?'': data.value_3 ,
+            value_4:data.value_4==undefined?'': data.value_4 ,
+            value_5:data.value_5==undefined?'': data.value_5 ,
+            value_6:data.value_6==undefined?'': data.value_6 ,
+            value_7:data.value_7==undefined?'': data.value_7 ,
+            value_8:data.value_8==undefined?'': data.value_8 ,
+        }
+        console.log("🚀 ~ file: SetupPage.js ~ line 525 ~ SetupPage ~ click_action_update=async ~ data_convert", data_convert)
+        let a= await action_edit_setup(data_convert)
+        if(a){
+            toast.success(lang.SUCC_POST_EDIT,{theme: "colored"});
+        }else{
+            toast.error(lang.ERRO_POST_EDIT,{theme: "colored"});
+        }
     }
     // convert treeData => html menu [todo=>]
     convert_menu_html=(treeData)=>{

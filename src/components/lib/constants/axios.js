@@ -365,3 +365,33 @@ export async function action_remove_img_by_id(id){
     })
     return response;
 }
+//
+const url_edit_setup='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/putes/edit_setup.php';
+export async function action_edit_setup(data){
+    let data_send=new FormData();
+    Object.keys(data).forEach(function(key) {
+            data_send.append(key,data[key]);
+    });
+    //
+    let response= axios.post(url_edit_setup, 
+        data_send
+    )
+    .then(function (response) {
+        console.log("🚀 ~ file: axios.js ~ line 381 ~ response", response.data)
+        if(response.data.status==true){
+            return true
+        }else{
+            return false
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return false
+    })
+    return response;
+}
+//
+const url_get_setup='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/putes/get_setup.php';
+export async function get_setup(){
+    return await fs_axios_get(url_get_setup,'ARRAY');
+}

@@ -135,6 +135,8 @@ code {
 .add-da{
   background-color: #2185d0 !important;
   color: azure !important;
+  margin-top: 5px!important;
+  display: block;
 }
 .rmx{
   position: absolute;
