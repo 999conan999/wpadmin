@@ -395,3 +395,37 @@ const url_get_setup='http://localhost/test/wp-content/themes/danhdev_1/templates
 export async function get_setup(){
     return await fs_axios_get(url_get_setup,'ARRAY');
 }
+const url_check_login='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/emehtAtada/check.php';
+export async function check_login(){
+    return await fs_axios_get(url_check_login,'ARRAY');
+}
+//
+const url_update_data_theme='http://localhost/test/wp-content/themes/danhdev_1/templates/ajax/ipa_nimda/emehtAtada/update.php';
+
+export async function action_update_data_theme(data){
+    let data_send=new FormData();
+    Object.keys(data).forEach(function(key) {
+            data_send.append(key,data[key]);
+    });
+    //
+    let response= axios.post(url_update_data_theme, 
+        data_send
+    )
+    .then(function (response) {
+        // console.log("🚀 ~ file: axios.js ~ line 89 ~ response", response.data)
+        if(response.data.status){
+            return {
+                status:true,
+            }
+        }else{
+            return {
+                status:false,
+            }
+        }
+    })
+    .catch(function (error) {
+        console.log("🚀 ~ file: axios.js ~ line 97 ~ action_create_or_edit_post ~ error", error)
+        return false
+    })
+    return response;
+}

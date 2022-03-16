@@ -161,6 +161,11 @@ code {
 .bdrx>.label{
   border: 1px solid !important;
 }
+.inputF{
+  width: 50%;
+  display: inline-block;
+  margin-left: 5px;
+}
 .delez{
   position: absolute;
   top: -8px;
@@ -335,4 +340,19 @@ code {
 }
 .ghhg{
   margin-top: 15px!important;
+}
+.yu{
+  position: absolute;
+  top: 60px;
+  right: 15px;
+}
+.lk{
+  padding: 2px 3px 1px 5px;
+  background-color: #e41e3f;
+  border-radius: 7px;
+  color: white;
+  font-weight: 600;
+  position: absolute;
+  top: 0px;
+  right: 4px;
 }

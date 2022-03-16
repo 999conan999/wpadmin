@@ -1,5 +1,5 @@
 import React, { Component  } from 'react';
-import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accordion, Icon,Select} from 'semantic-ui-react';
+import { Button,Segment,Input,Modal,Header,Dropdown,Radio, Form, TextArea, Accordion, Icon,Select,Popup} from 'semantic-ui-react';
 import EditorWrap from './editorwrap';
 import * as lang from './constants/language';
 import FileMedia from './fileMedia';
@@ -161,6 +161,7 @@ return_image=(list_img,type_media)=>{
                             <Button basic color='blue' size='small' className='btn-mgb'
                                 onClick={()=>this.setState({open:true,type_media:'add_img_to_content',multi_select:true})}
                             ><i className="fas fa-photo-video vv"></i>Add Media</Button>
+                            <div className='yu'><Popup content={lang.NOTE_ADD_ICON} trigger={ <span>👉<a target="_blank" href={lang.URL_ICON_TOOL}><i class="fa-solid fa-icons"></i>{lang.TITLE_ADD_ICON_TOOL}</a>👈</span>}/></div>
                             <EditorWrap
                                 action_change_content_post={this.action_change_content_post}
                                 content_post={data_source.content_post}

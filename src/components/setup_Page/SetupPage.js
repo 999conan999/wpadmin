@@ -27,7 +27,7 @@ class SetupPage extends Component {
                 url:''
             },
             data:{
-                
+                idN:1,
                 icon_url:'',
                 logo_url:'',
                 code_contacts:{
@@ -38,8 +38,7 @@ class SetupPage extends Component {
                 code_body:'',
                 code_footer:'',
                 css_code:'',
-                // code_function:''
-                value_1:'' ,
+                value_1:null ,
                 value_2:'' ,
                 value_3:'' ,
                 value_4:'' ,
@@ -68,7 +67,7 @@ class SetupPage extends Component {
                 code_footer:data_setup.footer_code,
                 css_code:data_setup.css_code,
                 // code_function:''
-                value_1:data_setup.value_1,
+                value_1:data_setup.value_1=='null'?null:JSON.parse(data_setup.value_1),
                 value_2:data_setup.value_2 ,
                 value_3:data_setup.value_3 ,
                 value_4:data_setup.value_4 ,
@@ -412,6 +411,22 @@ class SetupPage extends Component {
                         </Segment.Group>
 
                 </Segment>
+{/* value_1 here */}
+                <Segment raised className='okok'>
+                    <Header as='h4' className='clh'>*{lang.FOOTER_PAGE_SETUP}</Header>
+                    <div className='wrap-bb' >
+                        <span>{lang.VALUE} :</span>
+                        <div className='inputF'>
+                            <Input 
+                                size='small' 
+                                placeholder={`${lang.VALUE_ADD} `} fluid 
+                                // value={data.value_1}
+                                // onChange={(e,{value})=>this.action_change_code_value(value,i)}
+                            />
+                            
+                        </div>
+                    </div>
+                </Segment>
 
                <Segment raised className='okok'>
                     <Header as='h4' className='clh'>*{lang.CONTACT_CODE_WEB}</Header>
@@ -512,7 +527,7 @@ class SetupPage extends Component {
         let {treeData,data} =this.state;
         // console.log("🚀 ~ file: SetupPage.js ~ line 478 ~ SetupPage ~ data", data)
         let data_convert={
-            idN:1,//[todo]
+            idN:data.idN,
             icon:data.icon_url,
             logo:data.logo_url,
             menu_json:JSON.stringify(treeData) ,
@@ -523,7 +538,7 @@ class SetupPage extends Component {
             header_code:data.code_header ,
             body_code:data.code_body ,
             footer_code:data.code_footer ,
-            value_1:data.value_1==undefined?'': data.value_1,
+            value_1:JSON.stringify(data.value_1),
             value_2:data.value_2==undefined?'': data.value_2 ,
             value_3:data.value_3==undefined?'': data.value_3 ,
             value_4:data.value_4==undefined?'': data.value_4 ,
